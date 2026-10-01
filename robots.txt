@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /agence
+Disallow: /compte
+
+Sitemap: https://VOTRE-DOMAINE/sitemap.xml
