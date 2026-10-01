@@ -6,16 +6,16 @@
 <script>if(location.protocol!=="file:")document.write('<base href="/">')</script>
 <title>Autovia — Véhicules d'occasion</title>
 <meta name="description" content="Achat et vente de véhicules d'occasion. Un interlocuteur à chaque étape de votre projet.">
-<meta name="theme-color" content="#111111">
+<meta name="theme-color" content="#0b1b3f">
 <meta property="og:type" content="website"><meta property="og:title" content="Autovia — Véhicules d'occasion">
 <meta property="og:description" content="Achat et vente de véhicules d'occasion.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111111'/%3E%3Cpath d='M8 23 16 8l8 15h-4l-4-8-4 8z' fill='%23d71920'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b1b3f'/%3E%3Cpath d='M8 23 16 8l8 15h-4l-4-8-4 8z' fill='%231f4fd8'/%3E%3C/svg%3E">
 <link rel="preload" as="image" href="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=2000&q=80" fetchpriority="high">
 <meta name="twitter:card" content="summary_large_image"><meta property="og:locale" content="fr_FR">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#111111;--mute:#5f5f66;--line:#e6e6e3;--soft:#f6f6f4;--acc:#d71920;--accd:#a8121a;--r:10px;--hf:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;--bf:"Instrument Sans","Segoe UI",system-ui,sans-serif}
+:root{--ink:#0b1b3f;--mute:#55607a;--line:#dfe6f3;--soft:#f2f6ff;--acc:#1f4fd8;--accd:#173aa3;--r:10px;--hf:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;--bf:"Instrument Sans","Segoe UI",system-ui,sans-serif}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}
 body{margin:0;color:var(--ink);font:16px/1.6 var(--bf);background:#fff;-webkit-font-smoothing:antialiased}
 img{max-width:100%;display:block}a{color:inherit}
@@ -35,12 +35,12 @@ p{color:var(--mute);margin:.6em 0}
 .menu{display:none;margin-left:auto;border:1px solid var(--line);background:#fff;border-radius:8px;width:44px;height:44px;font-size:20px;cursor:pointer}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:8px;border:1px solid transparent;font:600 15px var(--bf);text-decoration:none;cursor:pointer;transition:background .15s,border-color .15s}
 .btn-acc{background:var(--acc);color:#fff}.btn-acc:hover{background:var(--accd)}
-.btn-dark{background:var(--ink);color:#fff}.btn-dark:hover{background:#2a2a2a}
+.btn-dark{background:var(--ink);color:#fff}.btn-dark:hover{background:#16295a}
 .btn-line{border-color:#c9cdd1;background:#fff}.btn-line:hover{border-color:var(--ink)}
 .btn-ghost{border-color:#ffffff88;color:#fff}.btn-ghost:hover{background:#ffffff1f}
 .btn[disabled]{opacity:.55;cursor:not-allowed}.wide{width:100%}
-.hero{position:relative;color:#fff;background:#111111 url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=2000&q=80") center/cover;padding:120px 0 150px}
-.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0a0a0aee,#0a0a0a99 60%,#0a0a0a33)}
+.hero{position:relative;color:#fff;background:#0b1b3f url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=2000&q=80") center/cover;padding:120px 0 150px}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#081a40ee,#081a4099 60%,#081a4033)}
 .hero .wrap{position:relative}.hero h1{max-width:12em}.hero p{color:#e4e6e8;font-size:19px;max-width:34em;margin:20px 0 0}
 .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
 .search{position:relative;margin-top:-72px;background:#fff;border-radius:14px;padding:24px;box-shadow:0 20px 60px #0000001f;border:1px solid var(--line)}
@@ -62,7 +62,7 @@ textarea{min-height:130px;resize:vertical}
 .meta{font-size:14px;margin:8px 0}.price{font:700 26px var(--hf);color:var(--ink);margin:10px 0 0}.monthly{font-size:13px;margin:2px 0 0}
 .band{background:var(--ink);color:#fff}.band .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
 .band div{padding:36px 26px;border-left:1px solid #ffffff22}.band div:first-child{border-left:0;padding-left:0}
-.band h3{font-size:18px}.band p{color:#bdbdbd;font-size:14px;margin:6px 0 0}
+.band h3{font-size:18px}.band p{color:#b8c4e0;font-size:14px;margin:6px 0 0}
 .split{display:grid;grid-template-columns:1fr 1fr}
 .split .photo{min-height:520px;background:url("https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1400&q=80") center/cover}
 .split .txt{padding:80px 7vw;display:flex;flex-direction:column;justify-content:center;background:var(--soft)}
@@ -105,10 +105,10 @@ textarea{min-height:130px;resize:vertical}
 @media(max-width:700px){body{padding-bottom:64px}.hero{padding:80px 0 110px}.hero p{font-size:17px}.search{padding:18px;margin-top:-56px}.filters,.bar{grid-template-columns:1fr 1fr}.filters .btn{grid-column:1/-1}.section{padding:60px 0}.head{display:block}.grid,.cards3,.mini,.split,.form,.equip,.footer .cols{grid-template-columns:1fr}.band .wrap{grid-template-columns:1fr}.band div{border-left:0;padding:22px 0;border-top:1px solid #ffffff22}.band div:first-child{border-top:0}.split .photo{min-height:300px}.split .txt{padding:56px 20px}.actions .btn{width:100%}.form .full{grid-column:auto}
 .mob{display:grid;grid-template-columns:1fr 1fr;gap:8px;position:fixed;bottom:0;left:0;right:0;background:var(--ink);padding:8px;z-index:40}.mob a{text-align:center;padding:12px;border-radius:8px;font-weight:600;text-decoration:none;background:#fff;color:var(--ink)}.mob a+a{background:var(--acc);color:#fff}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
-.vhero{background:radial-gradient(1200px 500px at 85% -10%,#3a0c0e 0,transparent 60%),#111111;color:#fff;padding:72px 0 80px}
+.vhero{background:radial-gradient(1200px 500px at 85% -10%,#1b3f9e 0,transparent 60%),#0b1b3f;color:#fff;padding:72px 0 80px}
 .vh{display:grid;grid-template-columns:1fr 1.05fr;gap:64px;align-items:center}
 .vhero h1{font-size:clamp(34px,4.4vw,56px)}.vhero p{color:#c9cdd1;font-size:18px;max-width:30em}
-.checks.light li{color:#e6e8ea}.checks.light li:before{border-color:#ff7a80}
+.checks.light li{color:#e6e8ea}.checks.light li:before{border-color:#8fb0ff}
 .wiz{background:#fff;color:var(--ink);border-radius:18px;padding:30px;box-shadow:0 30px 80px #0008}
 .wiz p{color:var(--mute)}.wiz fieldset{border:0;padding:0;margin:0;min-width:0}.wiz legend{font:700 24px var(--hf);margin-bottom:18px;padding:0}
 .prog{display:flex;gap:6px;list-style:none;padding:0;margin:0 0 26px;counter-reset:s}
@@ -117,7 +117,7 @@ textarea{min-height:130px;resize:vertical}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 .opt{display:block;margin:0;cursor:pointer}.opt input{position:absolute;opacity:0}
 .opt span{display:block;border:1.5px solid #c9cdd1;border-radius:10px;padding:14px;font-weight:600;text-align:center}
-.opt input:checked+span{border-color:var(--acc);background:#fdecec}.opt input:focus-visible+span{outline:3px solid var(--acc);outline-offset:2px}
+.opt input:checked+span{border-color:var(--acc);background:#eaf0ff}.opt input:focus-visible+span{outline:3px solid var(--acc);outline-offset:2px}
 .nav2{display:flex;justify-content:space-between;gap:10px;margin-top:22px}
 .res{text-align:center;padding:10px 0}[hidden]{display:none!important}.wiz .rl{font-weight:600;font-size:16px;margin:0}.wiz .rp{font:800 clamp(32px,4vw,46px)/1.1 var(--hf);color:var(--ink);margin:10px 0}.wiz .res p.rp{font-size:clamp(32px,4vw,46px)}.wiz .res p{font-size:16px}.wiz .rp span{font-size:.5em;color:var(--mute);font-weight:500}
 .res .checks{text-align:left;display:inline-block}.res .actions{justify-content:center}
@@ -130,31 +130,59 @@ textarea{min-height:130px;resize:vertical}
 .mark{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;font:800 clamp(34px,5.5vw,60px) var(--hf);letter-spacing:.14em;color:#fff;text-shadow:0 2px 12px #0008}
 .mark:before{content:"";position:absolute;width:78%;height:34%;border:4px solid #ffffffee;border-radius:10px;transform:rotate(-12deg)}.mark{transform:none}.mark{rotate:-12deg}.mark.res{font-size:clamp(26px,4vw,44px)}
 .ph.big{position:relative;border-radius:14px;overflow:hidden}.ph.big .main-ph{border-radius:0;display:block}
-.fav{position:absolute;right:12px;top:12px;z-index:2;width:40px;height:40px;border-radius:50%;border:0;background:#fff;color:#b5b5b5;font-size:20px;cursor:pointer;box-shadow:0 2px 8px #0003}.fav[aria-pressed=true]{color:#e0245e}
+.fav{position:absolute;right:12px;top:12px;z-index:2;width:40px;height:40px;border-radius:50%;border:0;background:#fff;color:#aab4cc;font-size:20px;cursor:pointer;box-shadow:0 2px 8px #0003}.fav[aria-pressed=true]{color:#e0245e}
 .auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px}.auth{border:1px solid var(--line);border-radius:14px;padding:26px;align-content:start}
 .reqs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.tag-s{font-size:13px;font-weight:600;color:var(--accd)}
 .alist{margin-top:26px;display:grid;gap:10px}.arow{display:grid;grid-template-columns:84px 1fr 150px auto auto;gap:14px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px 14px}
 .arow img{width:84px;height:60px;object-fit:cover;border-radius:8px}.arow span{display:block;font-size:14px;color:var(--mute)}.arow .btn{padding:9px 14px}
 .danger{color:#b42318;border-color:#f0c4c0}.thumbs-a{display:flex;gap:12px;flex-wrap:wrap}.thumbs-a div{width:130px}.thumbs-a img{width:130px;height:90px;object-fit:cover;border-radius:8px}.thumbs-a .btn{width:100%;margin-top:6px;padding:7px}
 @media(max-width:1050px){.arow{grid-template-columns:70px 1fr;}.arow select,.arow .btn{grid-column:2}.auth-grid,.reqs{grid-template-columns:1fr}}
-.header.sc{box-shadow:0 4px 24px #11111114}
+.header.sc{box-shadow:0 4px 24px #0b1b3f14}
 .car .ph img{transition:transform .5s}.car:hover .ph img{transform:scale(1.04)}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}.chips a{border:1px solid var(--line);background:#fff;border-radius:99px;padding:8px 16px;font-weight:600;font-size:14px;text-decoration:none}.chips a:hover{border-color:var(--acc);color:var(--accd)}.chips small{color:var(--mute);font-weight:500;margin-left:4px}
 .facts{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}.facts span{background:var(--soft);border-radius:99px;padding:5px 12px;font-size:13px;font-weight:600}
 .main-ph{cursor:zoom-in}
-.lb{position:fixed;inset:0;z-index:100;background:#050505ee;display:grid;place-items:center}.lb img{max-width:92vw;max-height:88vh;border-radius:8px}.lb button{position:absolute;background:#ffffff22;color:#fff;border:0;width:48px;height:48px;border-radius:50%;font-size:28px;cursor:pointer}.lb [data-x]{top:18px;right:18px}.lb .p{left:18px}.lb .n{right:18px}
+.lb{position:fixed;inset:0;z-index:100;background:#050d22ee;display:grid;place-items:center}.lb img{max-width:92vw;max-height:88vh;border-radius:8px}.lb button{position:absolute;background:#ffffff22;color:#fff;border:0;width:48px;height:48px;border-radius:50%;font-size:28px;cursor:pointer}.lb [data-x]{top:18px;right:18px}.lb .p{left:18px}.lb .n{right:18px}
 .tabs{display:flex;gap:6px;margin-bottom:22px;border-bottom:1px solid var(--line)}.tabs a{padding:12px 18px;text-decoration:none;font-weight:600;border-bottom:3px solid transparent;margin-bottom:-1px}.tabs a[aria-current=page]{border-color:var(--acc);color:var(--accd)}.tabs b{background:var(--acc);color:#fff;border-radius:99px;padding:1px 8px;font-size:12px;margin-left:6px}
 .lead{border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:#fff;display:grid;gap:4px}.lead[data-s=new]{border-left:4px solid var(--acc)}.lead header{display:flex;justify-content:space-between;gap:12px;align-items:center}.lead p{margin:2px 0;color:var(--ink)}.lead .m{color:var(--mute);font-size:14px}.lead select{width:auto}
 
 /* --- finitions --- */
-.btn{transition:background .15s,border-color .15s,transform .15s,box-shadow .15s}.btn-acc:hover{transform:translateY(-1px);box-shadow:0 8px 20px #d7192040}
-.car{transition:box-shadow .25s,transform .25s,border-color .25s}.car:hover{box-shadow:0 18px 40px #11111118;transform:translateY(-3px);border-color:#d7192055}
-.price{letter-spacing:-.02em}.hero h1{text-wrap:balance}.hero:before{background:linear-gradient(90deg,#0a0a0af0,#0a0a0a99 60%,#0a0a0a2e)}
-.header .btn{padding:11px 18px}.nav a:hover{border-color:#d71920}
-input:focus,select:focus,textarea:focus{border-color:var(--acc);outline:3px solid #d7192026;outline-offset:0}
-.band{border-top:3px solid var(--acc)}.chips a:hover{background:#fdecec}
+.btn{transition:background .15s,border-color .15s,transform .15s,box-shadow .15s}.btn-acc:hover{transform:translateY(-1px);box-shadow:0 8px 20px #1f4fd840}
+.car{transition:box-shadow .25s,transform .25s,border-color .25s}.car:hover{box-shadow:0 18px 40px #0b1b3f18;transform:translateY(-3px);border-color:#1f4fd855}
+.price{letter-spacing:-.02em}.hero h1{text-wrap:balance}.hero:before{background:linear-gradient(90deg,#081a40f0,#081a4099 60%,#081a4033)}
+.header .btn{padding:11px 18px}.nav a:hover{border-color:#1f4fd8}
+input:focus,select:focus,textarea:focus{border-color:var(--acc);outline:3px solid #1f4fd826;outline-offset:0}
+.band{border-top:3px solid var(--acc)}.chips a:hover{background:#eaf0ff}
 .fav{transition:transform .15s}.fav:hover{transform:scale(1.1)}
 .status.ok{background:#e7f5ec;color:#14532d}
+
+/* --- premium --- */
+body{background:#fff}h1,h2{font-weight:800}
+.eyebrow{display:inline-block;font:700 12px var(--bf);letter-spacing:.14em;text-transform:uppercase;color:var(--acc);margin-bottom:12px}
+.hero{padding:140px 0 170px}.hero h1{max-width:11em}.hero p{color:#dbe4fb}
+.search{border-radius:18px;box-shadow:0 30px 80px #0b1b3f26;padding:28px}
+.btn{border-radius:10px;padding:14px 24px}.btn-acc{box-shadow:0 6px 18px #1f4fd833}
+.car{border-radius:16px;border-color:#e6ecf8}.car .body{padding:20px 22px 24px}
+.car .price{color:var(--acc)}
+.sec-title{max-width:640px;margin-bottom:38px}.sec-title p{font-size:18px}
+.how{counter-reset:s;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;list-style:none;padding:0;margin:0}
+.how li{counter-increment:s;background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px;position:relative}
+.how li:before{content:"0" counter(s);font:800 44px var(--hf);color:#dbe5ff;display:block;margin-bottom:8px}
+.how h3{margin-bottom:6px}
+.why{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.why div{padding:26px;border-radius:16px;background:#fff;border:1px solid var(--line)}
+.ico{width:46px;height:46px;border-radius:12px;background:#eaf0ff;color:var(--acc);display:grid;place-items:center;margin-bottom:14px}
+.ico svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.faq details{border:1px solid var(--line);border-radius:12px;padding:0 20px;margin-bottom:10px;background:#fff}
+.faq summary{cursor:pointer;font-weight:600;padding:18px 0;list-style:none;display:flex;justify-content:space-between;gap:14px}
+.faq summary::after{content:"+";font-size:22px;color:var(--acc);line-height:1}.faq details[open] summary::after{content:"–"}
+.faq summary::-webkit-details-marker{display:none}.faq details p{margin:0 0 18px}
+.cta{background:linear-gradient(120deg,#0b1b3f,#1b3f9e);color:#fff;border-radius:22px;padding:56px;display:flex;justify-content:space-between;align-items:center;gap:30px;flex-wrap:wrap}
+.cta h2{max-width:14em}.cta p{color:#cfdaf7;margin:8px 0 0}
+.rv{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px}.rv .st{color:#f5a623;letter-spacing:2px;margin-bottom:8px}.rv p{color:var(--ink)}
+.sample{display:inline-block;background:#fff4d6;color:#7a5400;border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700;margin-bottom:14px}
+@media(max-width:1050px){.why{grid-template-columns:1fr 1fr}.how{grid-template-columns:1fr}}
+@media(max-width:700px){.why{grid-template-columns:1fr}.cta{padding:34px 24px}.hero{padding:90px 0 120px}}
 </style>
 </head>
 <body>
@@ -181,9 +209,10 @@ const SITE={
   email:"bonjour@autovia-demo.fr",
   address:"12 avenue de l'Automobile, 75000 Paris",
   hours:["Lun–Ven : 9h00–18h30","Sam : 9h00–17h00"],
-  legal:{company:"",form:"",siret:"",director:"",host:""},   // pour la page Mentions légales
+  legal:{company:"",form:"",capital:"",siret:"",rcs:"",tva:"",director:"",host:"",retention:"",mediator:""},   // pour la page Mentions légales
   googleReviewsUrl:"",                                       // lien vers votre fiche Google
-  reviews:[]                                                 // [{author:"", text:"", rating:5}] : section masquée si vide
+  reviews:[],                                                // vrais avis clients : [{author:"", text:"", rating:5}]
+  sampleReviews:[{author:"Client exemple A",text:"Accueil sérieux, véhicule conforme à l'annonce et démarches expliquées clairement.",rating:5},{author:"Client exemple B",text:"Réponse rapide et rendez-vous simple à organiser.",rating:5},{author:"Client exemple C",text:"Estimation claire de ma reprise, sans pression.",rating:5}]
 };
 /* ================================================================== */
 
@@ -243,7 +272,9 @@ const failed=`<div class="wrap section"><div class="empty"><h2>Les véhicules so
 
 async function home(){
   const vs=await vehicles();if(!vs)return{html:failed,title:SITE.name};
-  const reviews=SITE.reviews.length?`<section class="section"><div class="wrap"><div class="head"><h2>Ils nous ont fait confiance</h2>${SITE.googleReviewsUrl?`<a href="${esc(SITE.googleReviewsUrl)}" rel="noopener" target="_blank">Tous les avis Google</a>`:""}</div><div class="cards3">${SITE.reviews.map(r=>`<div><p style="color:var(--ink)">« ${esc(r.text)} »</p><b>${esc(r.author)}</b>${r.rating?`<p class="monthly">${esc(r.rating)}/5</p>`:""}</div>`).join("")}</div></div></section>`:"";
+  const real=SITE.reviews.length>0,list=real?SITE.reviews:(sb?[]:SITE.sampleReviews);
+  const reviews=list.length?`<section class="section soft"><div class="wrap"><div class="head"><div><span class="eyebrow">Avis clients</span><h2>Ils nous ont fait confiance</h2>${real?"":'<p><span class="sample">Exemples de maquette — à remplacer par de vrais avis avant la mise en ligne</span></p>'}</div>${real&&SITE.googleReviewsUrl?`<a href="${esc(SITE.googleReviewsUrl)}" rel="noopener" target="_blank">Tous les avis Google</a>`:""}</div><div class="cards3">${list.map(r=>`<div class="rv"><div class="st" aria-label="${r.rating||5} sur 5">★★★★★</div><p>« ${esc(r.text)} »</p><b>${esc(r.author)}</b></div>`).join("")}</div></div></section>`:"";
+  const reviewsOld=SITE.reviews.length?`<section class="section"><div class="wrap"><div class="head"><h2>Ils nous ont fait confiance</h2>${SITE.googleReviewsUrl?`<a href="${esc(SITE.googleReviewsUrl)}" rel="noopener" target="_blank">Tous les avis Google</a>`:""}</div><div class="cards3">${SITE.reviews.map(r=>`<div><p style="color:var(--ink)">« ${esc(r.text)} »</p><b>${esc(r.author)}</b>${r.rating?`<p class="monthly">${esc(r.rating)}/5</p>`:""}</div>`).join("")}</div></div></section>`:"";
   const cnt={};vs.forEach(v=>v.status!=="sold"&&(cnt[v.brand]=(cnt[v.brand]||0)+1));
   const chips=Object.keys(cnt).length>1?`<div class="chips" aria-label="Marques disponibles">${Object.entries(cnt).sort().map(([b,n])=>`<a href="#/acheter?brand=${encodeURIComponent(b)}">${esc(b)}<small>${n}</small></a>`).join("")}</div>`:"";
   return{title:`${SITE.name} — Véhicules d'occasion : achat et vente`,desc:"Achat et vente de véhicules d'occasion. Véhicules sélectionnés, démarches simplifiées, un interlocuteur à chaque étape.",
@@ -259,7 +290,18 @@ async function home(){
 <div class="grid">${vs.slice(0,6).map(card).join("")||'<div class="empty full">Aucun véhicule en ligne pour le moment.</div>'}</div></div></section>
 <section class="band"><div class="wrap"><div><h3>Accompagnement personnalisé</h3><p>Un interlocuteur pour votre projet.</p></div><div><h3>Véhicules sélectionnés</h3><p>Des critères de sélection clairs.</p></div><div><h3>Démarches simplifiées</h3><p>Moins de contraintes administratives.</p></div><div><h3>Transaction sécurisée</h3><p>Un cadre professionnel à chaque étape.</p></div></div></section>
 <section class="split"><div class="photo" role="img" aria-label="Remise des clés d'un véhicule"></div><div class="txt"><h2>Vendez votre voiture au meilleur prix</h2><p>Nous vous accompagnons de l'estimation jusqu'à la vente.</p>
-<div class="mini"><div><b>Estimation immédiate</b><p>Le montant de votre véhicule en deux minutes.</p><a href="#/vendre">Estimer mon véhicule</a></div><div><b>Vente accompagnée</b><p>Photos, diffusion, contacts et rendez-vous.</p><a href="#/vendre">Estimer mon véhicule</a></div></div></div></section>${reviews}`,
+<div class="mini"><div><b>Estimation immédiate</b><p>Le montant de votre véhicule en deux minutes.</p><a href="#/vendre">Estimer mon véhicule</a></div><div><b>Vente accompagnée</b><p>Photos, diffusion, contacts et rendez-vous.</p><a href="#/vendre">Estimer mon véhicule</a></div></div></div></section><section class="section"><div class="wrap"><div class="sec-title"><span class="eyebrow">Pourquoi nous</span><h2>L'exigence d'un professionnel, la simplicité en plus.</h2></div>
+<div class="why"><div><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><h3>Véhicules contrôlés</h3><p>Chaque véhicule est présenté avec ses informations essentielles.</p></div>
+<div><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><h3>Réponse rapide</h3><p>Une équipe qui revient vers vous dans les meilleurs délais.</p></div>
+<div><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7"/></svg></span><h3>Démarches simplifiées</h3><p>Nous vous guidons sur les formalités administratives.</p></div>
+<div><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg></span><h3>Paiement sécurisé</h3><p>Un cadre clair et professionnel à chaque étape.</p></div></div></div></section>
+<section class="section soft"><div class="wrap"><div class="sec-title"><span class="eyebrow">Comment ça marche</span><h2>Votre projet en trois étapes.</h2></div>
+<ol class="how"><li><h3>Choisissez</h3><p>Parcourez les véhicules, filtrez par budget, carburant ou kilométrage.</p></li><li><h3>Échangez</h3><p>Posez vos questions, planifiez une visite ou demandez à être rappelé.</p></li><li><h3>Repartez</h3><p>Nous vous accompagnons sur les démarches jusqu'à la remise des clés.</p></li></ol></div></section>${reviews}<section class="section"><div class="wrap two"><div><span class="eyebrow">FAQ</span><h2>Vos questions fréquentes</h2><p>Un doute ? Notre équipe répond par téléphone ou par e-mail.</p></div><div class="faq">
+<details><summary>Puis-je essayer un véhicule avant d'acheter ?</summary><p>Oui, sur rendez-vous. Contactez-nous pour planifier une visite.</p></details>
+<details><summary>Reprenez-vous mon ancien véhicule ?</summary><p>Vous pouvez obtenir une estimation en ligne, puis nous étudions la reprise ou la vente accompagnée.</p></details>
+<details><summary>Proposez-vous un financement ?</summary><p>Un financement peut être étudié selon votre dossier, sous réserve d'acceptation.</p></details>
+<details><summary>Une garantie est-elle prévue ?</summary><p>Les conditions de garantie sont précisées pour chaque véhicule avant l'achat.</p></details></div></div></section>
+<section class="section" style="padding-top:0"><div class="wrap"><div class="cta"><div><h2>Un projet ? Parlons-en.</h2><p>Un conseiller vous répond rapidement.</p></div><div class="actions" style="margin:0"><a class="btn btn-ghost" href="#/contact?type=callback">Être rappelé</a><a class="btn btn-acc" style="background:#fff;color:#0b1b3f" href="#/acheter">Voir les véhicules</a></div></div></div></section>`,
   ld:sb?{"@context":"https://schema.org","@type":"AutoDealer",name:SITE.name,telephone:SITE.phone,email:SITE.email,address:SITE.address}:null};
 }
 
@@ -369,8 +411,20 @@ function about(){
 <section class="section"><div class="wrap two"><div><h2>Nos engagements</h2><ul class="checks"><li>Véhicule contrôlé</li><li>Historique vérifié</li><li>Contrôle technique</li><li>Garantie selon conditions</li><li>Assistance administrative</li></ul></div><div><h2>Nous trouver</h2><p>${esc(SITE.address)}</p><p>${SITE.hours.map(esc).join("<br>")}</p><p><a href="tel:${SITE.phoneHref}">${esc(SITE.phone)}</a> · <a href="mailto:${esc(SITE.email)}">${esc(SITE.email)}</a></p></div></div></section>`};
 }
 function legal(){
-  const L=SITE.legal,f=x=>esc(x)||"<i>à compléter</i>";
-  return{title:`Mentions légales — ${SITE.name}`,html:pageHead("Mentions légales","Informations légales et traitement des données.")+`<section class="section"><div class="wrap prose"><h2>Éditeur du site</h2><p>${f(L.company)} ${f(L.form)}<br>SIRET : ${f(L.siret)}<br>Directeur de la publication : ${f(L.director)}<br>${esc(SITE.address)}<br>${esc(SITE.email)} · ${esc(SITE.phone)}</p><h2>Hébergement</h2><p>${f(L.host)}</p><h2>Données personnelles</h2><p>Les informations saisies dans les formulaires sont utilisées uniquement pour traiter votre demande. Vous pouvez demander l'accès, la rectification ou la suppression de vos données en écrivant à ${esc(SITE.email)}. Ce site n'utilise pas de cookies publicitaires.</p></div></section>`};
+  const L=SITE.legal,f=x=>esc(x)||"<i>[à compléter]</i>";
+  const sec=(t,b)=>`<h2>${t}</h2>${b}`;
+  return{title:`Mentions légales — ${SITE.name}`,desc:"Mentions légales, données personnelles, cookies et médiation de la consommation.",html:pageHead("Mentions légales","Informations légales, protection des données et droits des consommateurs.")+`<section class="section"><div class="wrap prose">
+<p><i>Modèle à compléter avec vos informations réelles et à faire relire par un professionnel du droit avant la mise en ligne. Les champs entre crochets ne sont volontairement pas remplis.</i></p>
+${sec("1. Éditeur du site",`<p>${f(L.company)} — ${f(L.form)} au capital de ${f(L.capital)}<br>Siège social : ${esc(SITE.address)}<br>SIRET : ${f(L.siret)} · RCS : ${f(L.rcs)}<br>N° de TVA intracommunautaire : ${f(L.tva)}<br>Contact : ${esc(SITE.email)} · ${esc(SITE.phone)}<br>Directeur de la publication : ${f(L.director)}</p>`)}
+${sec("2. Hébergement",`<p>${f(L.host)}</p>`)}
+${sec("3. Activité réglementée",`<p>Activité de vente de véhicules d'occasion. Les prix affichés sont des prix TTC. Les informations des annonces (kilométrage, année, équipements) sont données à titre indicatif et confirmées au contrat de vente. Les mensualités de financement sont indicatives, sans valeur contractuelle, et soumises à l'acceptation du dossier par l'organisme prêteur.</p>`)}
+${sec("4. Garanties",`<p>Le vendeur professionnel reste tenu de la garantie légale de conformité (articles L.217-3 et suivants du Code de la consommation) et de la garantie des vices cachés (articles 1641 et suivants du Code civil). Une garantie commerciale éventuelle est précisée pour chaque véhicule.</p>`)}
+${sec("5. Données personnelles",`<p><b>Responsable du traitement :</b> ${f(L.company)}, ${esc(SITE.email)}.</p><p><b>Finalités :</b> répondre à vos demandes de contact, d'estimation, de rappel et de visite ; gérer votre espace client et vos favoris ; établir les devis et contrats. <b>Base légale :</b> exécution de mesures précontractuelles ou du contrat, intérêt légitime et, le cas échéant, votre consentement.</p><p><b>Destinataires :</b> équipe de ${esc(SITE.name)} et prestataires techniques (hébergement, base de données) agissant sur instruction. <b>Durée de conservation :</b> ${f(L.retention)} (indicatif : 3 ans après le dernier contact pour les prospects).</p><p><b>Vos droits :</b> accès, rectification, effacement, limitation, opposition et portabilité, en écrivant à ${esc(SITE.email)}. Vous pouvez introduire une réclamation auprès de la CNIL (cnil.fr).</p>`)}
+${sec("6. Cookies et traceurs",`<p>Le site utilise uniquement le stockage local nécessaire à son fonctionnement (favoris, session). Si des outils de mesure d'audience ou publicitaires sont ajoutés, votre consentement sera demandé au préalable.</p>`)}
+${sec("7. Médiation de la consommation",`<p>En cas de litige, vous pouvez recourir gratuitement au médiateur de la consommation : ${f(L.mediator)}.</p>`)}
+${sec("8. Propriété intellectuelle",`<p>Les textes, images, logos et éléments graphiques du site sont protégés. Toute reproduction sans autorisation écrite est interdite.</p>`)}
+${sec("9. Crédits",`<p>Photographies d'illustration : Unsplash (démonstration). À remplacer par vos propres photos.</p>`)}
+</div></section>`};
 }
 async function vehiclePage(slug){
   const vs=await vehicles();if(!vs)return{html:failed,title:SITE.name};
@@ -549,8 +603,8 @@ document.addEventListener("change",async e=>{const ls=e.target.closest("select[d
   const s=e.target.closest("select[data-sv]");if(!s||!sb)return;
   await sb.from("vehicles").update({status:s.value}).eq("id",s.dataset.sv);cache=null;router()});
 
-const CLEAN=location.protocol!=="file:";
-const here=()=>CLEAN?location.pathname+location.search:location.hash.replace(/^#/,"")||"/";
+const CLEAN=location.protocol!=="file:";if(CLEAN&&/\/index\.html?$/.test(location.pathname))history.replaceState(null,"","/"+location.search);
+const here=()=>CLEAN?location.pathname.replace(/\/index\.html?$/,"/")+location.search:location.hash.replace(/^#/,"")||"/";
 function nav(p,replace){if(!CLEAN){replace?location.replace("#"+p):(location.hash="#"+p);return}history[replace?"replaceState":"pushState"](null,"",p);router()}
 function lightbox(imgs,i){const o=document.createElement("div");o.className="lb";o.setAttribute("role","dialog");o.setAttribute("aria-label","Photos");
   o.innerHTML=`<button data-x aria-label="Fermer">×</button>${imgs.length>1?'<button class="p" data-p aria-label="Photo précédente">‹</button><button class="n" data-n aria-label="Photo suivante">›</button>':""}<img alt="">`;
