@@ -17,6 +17,26 @@
 2. Créez le compte de l'agence (Authentication > Users), puis donnez-lui l'accès : voir la dernière ligne du fichier SQL.
 3. Le site : `#/compte` (acheteur) et `#/agence` (ajout, modification, statut vendu avec filigrane, suppression).
 
+## Documents clients (factures, bons de commande…)
+
+Exécutez `supabase_documents.sql` après les deux autres scripts. L'agence envoie des documents depuis `#/agence?tab=documents` ; chaque client les retrouve dans « Mon compte ». Stockage privé, accès par lien temporaire.
+
+## Dossiers de vente
+
+Exécutez `supabase_dossiers.sql` après `supabase_documents.sql`. Onglet « Dossiers de vente » dans l'espace agence : étapes, pièces à fournir, bon de commande / facture, suivi visible par le client.
+
+## Cerfa automatiques
+
+Exécutez `supabase_cerfa.sql`. Onglet « Cerfa » : importez le PDF officiel remplissable (service-public.fr), associez ses champs aux données une seule fois, puis cliquez sur le nom du Cerfa dans un dossier pour le télécharger prérempli. Vérifiez toujours le document avant signature.
+
+## Pilotage, comparateur, alertes
+
+Exécutez `supabase_pilotage.sql`. Onglet « Pilotage » (CA, marge, stock, jours en stock, saisie des coûts d'achat : table réservée à l'agence). Comparateur sur la fiche véhicule (`#/comparer`). Alertes de recherche dans « Mon compte ».
+
+## Livre de police, compta, conformité
+
+Exécutez `supabase_compta.sql`. Onglets « Livre de police » (ajout seul, export CSV), « Compta » (recettes, dépenses, TVA indicative, export) et « Conformité » (pense-bête). Faites valider le registre électronique avec votre comptable.
+
 ## Référencement et URL propres
 
 Le site utilise des URL propres (`/acheter`, `/vehicule/mon-slug`). Il faut que l'hébergeur renvoie toutes les pages vers `index.html` :
