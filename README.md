@@ -49,6 +49,14 @@ Après chaque ajout de véhicule : `SITE_URL=… SUPABASE_URL=… SUPABASE_ANON_
 
 Les photos sont réduites (1600 px, WebP) avant envoi. Choisissez la couverture avec « Mettre en couverture ».
 
+## Application (PWA)
+
+`manifest.webmanifest`, `sw.js` et `icons/` doivent être déployés à la racine du site, en HTTPS. Le bandeau « Installer » apparaît tant que l'application n'est pas installée. Remplacez les icônes dans `icons/` par votre logo. Les données (Supabase) ne sont jamais mises en cache hors ligne.
+
+## Fiche véhicule agence
+
+Exécutez `supabase_fiche.sql`. Bouton « Fiche » sur chaque véhicule : identité (immatriculation, VIN), achat, marge, création du dossier de vente, inscription au livre de police, historique des dossiers et documents.
+
 ## Référencement et URL propres
 
 Le site utilise des URL propres (`/acheter`, `/vehicule/mon-slug`). Il faut que l'hébergeur renvoie toutes les pages vers `index.html` :

@@ -6,7 +6,7 @@
 <script>if(location.protocol!=="file:")document.write('<base href="/">')</script>
 <title>Autovia — Véhicules d'occasion</title>
 <meta name="description" content="Achat et vente de véhicules d'occasion. Un interlocuteur à chaque étape de votre projet.">
-<meta name="theme-color" content="#0b1b3f">
+<meta name="theme-color" content="#0b1b3f"><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Autovia">
 <meta property="og:type" content="website"><meta property="og:title" content="Autovia — Véhicules d'occasion">
 <meta property="og:description" content="Achat et vente de véhicules d'occasion.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b1b3f'/%3E%3Cpath d='M8 23 16 8l8 15h-4l-4-8-4 8z' fill='%231f4fd8'/%3E%3C/svg%3E">
@@ -277,12 +277,28 @@ select,input,textarea{min-height:48px;border-radius:10px;border-color:#d3dbec}
 .drop{display:block;border:2px dashed #b8c4e0;border-radius:16px;padding:28px 18px;text-align:center;cursor:pointer;background:var(--soft);transition:border-color .15s,background .15s}.drop:hover,.drop.on{border-color:var(--acc);background:#eaf0ff}
 .drop b{display:block;color:var(--acc);font-size:17px}.drop span{color:var(--mute);font-size:14px}.drop input{display:none}
 .thumbs-a{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}.thumbs-a>div{position:relative;border-radius:12px;overflow:hidden;background:#fff;box-shadow:var(--sh)}.thumbs-a img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}.thumbs-a .btn{width:100%;border-radius:0;padding:8px;font-size:12px}.thumbs-a .cov{position:absolute;top:8px;left:8px;background:var(--acc);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px}
+
+/* --- v6 : étiquettes droites, agence en menu latéral, tailles --- */
+.mark{rotate:0!important;transform:none!important;isolation:isolate;font-size:clamp(22px,4vw,34px)!important;letter-spacing:.3em;text-indent:.3em}
+.mark:before{rotate:0;transform:translateY(-50%)!important;left:0!important;right:0;top:50%;width:auto!important;height:clamp(46px,17%,76px)!important;border:0!important;border-radius:0!important;background:#0b1b3fd9;z-index:-1}
+.mark.res{font-size:clamp(20px,3.4vw,30px)!important}.mark.res:before{background:#b45309e0}
+.tag{z-index:2}
+img,video,canvas{max-width:100%}select,input,textarea{min-width:0;max-width:100%}.actions{flex-wrap:wrap}.lead header,.arow{min-width:0}.lead header{flex-wrap:wrap;gap:8px}
+.tabs{overflow-x:auto;flex-wrap:nowrap;white-space:nowrap;scrollbar-width:none;gap:4px}.tabs::-webkit-scrollbar{display:none}.tabs a{flex:0 0 auto}.tabs b{background:var(--acc);color:#fff;border-radius:99px;font-size:11px;padding:2px 7px;margin-left:6px}
+@media(min-width:1100px){
+ .wrap:has(>.tabs){width:min(1400px,calc(100% - 48px));display:grid;grid-template-columns:230px minmax(0,1fr);column-gap:40px;align-items:start}
+ .wrap:has(>.tabs)>.tabs{grid-column:1;grid-row:1/span 60;position:sticky;top:calc(var(--hh,72px) + 16px)!important;flex-direction:column;overflow:visible;border:0;background:#fff;box-shadow:var(--sh);border-radius:16px;padding:10px;gap:2px;margin:0}
+ .wrap:has(>.tabs)>.tabs a{border:0;border-radius:10px;margin:0;padding:11px 14px;display:flex;justify-content:space-between;white-space:normal}
+ .wrap:has(>.tabs)>.tabs a[aria-current=page]{background:#eaf0ff;color:var(--accd)}.wrap:has(>.tabs)>.tabs a:hover{background:var(--soft)}
+ .wrap:has(>.tabs)>*:not(.tabs){grid-column:2;min-width:0}
+}
+@media(max-width:700px){.form{grid-template-columns:1fr}.cmp th,.cmp td{min-width:110px;padding:10px}.kpis{grid-template-columns:1fr 1fr!important}.lead,.auth,.wiz{padding:18px}.aside{padding:20px}.pagehead h1,.page h1{font-size:30px}}
 </style>
 </head>
 <body>
 <a class="skip" href="#app">Aller au contenu</a>
 <div id="demo"></div>
-<header class="header"><div class="appbar" id="appbar" hidden><span>📱 Notre application arrive bientôt.</span><a href="#/contact?type=callback">Être prévenu</a><button type="button" id="appbar-x" aria-label="Fermer">×</button></div><div class="wrap">
+<header class="header"><div class="wrap">
 <a class="logo" href="#/" aria-label="Autovia, accueil">Auto<span>via</span></a>
 <nav class="nav" id="nav" aria-label="Navigation principale">
 <a href="#/" data-r="">Accueil</a><a href="#/acheter" data-r="acheter">Acheter</a><a href="#/vendre" data-r="vendre">Vendre</a><a href="#/services" data-r="services">Services</a><a href="#/apropos" data-r="apropos">À propos</a><a href="#/contact" data-r="contact">Contact</a><a href="#/compte" data-r="compte">Mon compte</a><a class="btn btn-acc navcta" href="#/vendre">Estimer mon véhicule</a>
@@ -650,7 +666,7 @@ ${(AL||[]).map(a=>{const m=hit(a);return`<div class="info" style="margin-bottom:
 }
 const row=v=>`<div class="arow"><img src="${esc(photos(v)[0])}" alt="" loading="lazy"><div><b>${esc(title(v))}</b><span>${v.year||""} · ${km(v.mileage)} · ${money(v.price)}</span></div>
 <select data-sv="${v.id}" aria-label="Statut">${Object.entries(STATUS).map(([k,l])=>`<option value="${k}"${v.status===k?" selected":""}>${l}</option>`).join("")}</select>
-<a class="btn btn-line" href="#/agence?edit=${v.id}">Modifier</a><button class="btn btn-line danger" data-del="${v.id}">Supprimer</button></div>`;
+<a class="btn btn-acc" href="#/agence?fiche=${v.id}">Fiche</a><a class="btn btn-line" href="#/agence?edit=${v.id}">Modifier</a><button class="btn btn-line danger" data-del="${v.id}">Supprimer</button></div>`;
 async function agence(q){
   const t=`Espace agence — ${SITE.name}`;
   if(!sb)return{title:t,html:pageHead("Espace agence","Connectez la base de données (config.js) pour gérer vos véhicules.")};
@@ -666,6 +682,20 @@ async function agence(q){
 ${vh?`<p>${esc(vh)}${l.vehicle_year?" · "+esc(l.vehicle_year):""}${l.mileage?" · "+km(l.mileage):""}${l.fuel?" · "+esc(l.fuel):""}${l.gearbox?" · "+esc(l.gearbox):""}${l.condition?" · état "+esc(String(l.condition).toLowerCase()):""}</p>`:""}
 ${l.subject?`<p class="m">Sujet : ${esc(l.subject)}</p>`:""}${l.message?`<p>${esc(l.message)}</p>`:""}${e?`<p class="m">Estimation fournie : ${money(e.low)} à ${money(e.high)}${l.metadata.estimate_demo?" (démo)":""}</p>`:""}<div class="lact">${l.phone?`<a class="btn btn-acc" href="tel:${esc(l.phone)}">Appeler</a>`:""}${l.email?`<a class="btn btn-line" href="mailto:${esc(l.email)}?subject=${encodeURIComponent("Votre demande — "+SITE.name)}">Répondre</a>`:""}</div></article>`};
     return{title:t,html:pageHead("Espace agence","Demandes reçues depuis le site, les plus récentes en premier.")+`<section class="section"><div class="wrap">${tabs("d")}<div class="alist">${(L||[]).map(lrow).join("")||"<p>Aucune demande pour l'instant.</p>"}</div></div></section>`};
+  }
+  if(q.fiche){
+    const [{data:vv},{data:co},{data:dl},{data:dc}]=await Promise.all([sb.from("vehicles").select("*,vehicle_images(*)").eq("id",q.fiche).maybeSingle(),sb.from("vehicle_costs").select("*").eq("vehicle_id",q.fiche).maybeSingle(),sb.from("deals").select("id,client_name,stage,price,created_at").eq("vehicle_id",q.fiche).order("created_at",{ascending:false}),sb.from("client_documents").select("id,kind,title,created_at").eq("vehicle_id",q.fiche).order("created_at",{ascending:false})]);
+    if(!vv)return{title:t,html:pageHead("Véhicule introuvable","")};const c=co||{};
+    const {data:lp}=c.vin?await sb.from("police_register").select("seq,entry_type,occurred_on,counterparty_name,price").eq("vin",c.vin).order("seq"):{data:[]};
+    const cost=(+c.purchase_price||0)+(+c.prep_cost||0),mg=c.purchase_price!=null?(+vv.price||0)-cost:null,days=Math.max(0,Math.round((Date.now()-new Date(c.purchased_at||vv.created_at))/864e5));
+    return{title:t,html:pageHead(esc(title(vv)),`${STATUS[vv.status]||""} · ${money(vv.price)} · ${days} jour(s) en stock${mg!=null?" · marge "+money(mg):""}`)+`<section class="section"><div class="wrap">${tabs("")}
+<div class="actions" style="margin-top:0"><a class="btn btn-acc" href="#/agence?edit=${vv.id}">Modifier l'annonce</a><a class="btn btn-line" href="#/vehicule/${esc(vv.slug)}">Voir l'annonce</a><button class="btn btn-dark" data-fiche-deal="${vv.id}">Créer un dossier de vente</button><a class="crumb" href="#/agence" style="align-self:center">Retour aux véhicules</a></div>
+<form class="form auth" data-fiche="${vv.id}" style="margin-top:20px"><h2 class="full" style="font-size:24px">Identité du véhicule</h2>${field("plate","Immatriculation")}${field("vin","N° VIN")}${field("first_reg_date","1re immatriculation",{type:"date"})}
+<h2 class="full" style="font-size:24px;margin-top:10px">Achat</h2>${field("purchased_at","Date d'achat",{type:"date"})}${field("purchase_price","Prix d'achat (€)",{type:"number"})}${field("prep_cost","Remise en état (€)",{type:"number"})}${field("purchase_payment","Mode de règlement")}${field("seller_name","Vendeur : nom",{full:1})}${field("seller_address","Vendeur : adresse",{full:1})}
+<p class="status full" role="status"></p><button class="btn btn-acc full" type="submit">Enregistrer la fiche</button><button class="btn btn-line full" type="button" data-fiche-lp>Inscrire l'achat au livre de police</button></form>
+<div class="two" style="margin-top:34px;grid-template-columns:1fr 1fr;gap:28px"><div><h2 style="font-size:22px">Dossiers de vente</h2>${(dl||[]).map(d=>`<a class="dl" href="#/agence?deal=${d.id}" style="margin-top:10px"><div><b>${esc(d.client_name)}</b><span style="display:block;color:var(--mute);font-size:14px">${d.price?money(d.price):""}</span></div><span class="badge">${d.stage==="lost"?"Perdu":STAGES[d.stage]}</span><span></span></a>`).join("")||'<p class="m">Aucun dossier.</p>'}</div>
+<div><h2 style="font-size:22px">Documents et registre</h2>${(dc||[]).map(d=>`<p style="margin:8px 0"><b>${esc(DKIND[d.kind]||d.kind)}</b> · ${esc(d.title)} · ${fd8(d.created_at)}</p>`).join("")}${(lp||[]).map(r=>`<p style="margin:8px 0">Livre de police n° <b>${r.seq}</b> · ${r.entry_type} · ${fd8(r.occurred_on)} · ${esc(r.counterparty_name)}</p>`).join("")||(dc&&dc.length?"":'<p class="m">Rien pour l\'instant.</p>')}</div></div></div></section>`,
+    after(){const f=$("[data-fiche]");["plate","vin","first_reg_date","purchased_at","purchase_price","prep_cost","purchase_payment","seller_name","seller_address"].forEach(k=>{if(f.elements[k])f.elements[k].value=c[k]??""});window._fv={id:vv.id,t:title(vv),price:vv.price,mileage:vv.mileage}}};
   }
   if(q.tab==="avis"){
     const {data:rv}=await sb.from("reviews").select("*").order("created_at",{ascending:false});const lab={pending:"En attente",approved:"Publié",rejected:"Refusé"};
@@ -772,9 +802,13 @@ ${field("equipment","Équipements (un par ligne)",{type:"textarea",full:1})}${fi
 ${imgs.length?`<div class="full thumbs-a">${imgs.map(i=>`<div>${imgs[0]===i?'<span class="cov">Couverture</span>':""}<img src="${esc(pubUrl(i.storage_path))}" alt="">${imgs[0]!==i?`<button type="button" class="btn btn-line" data-cover="${i.id}" data-min="${imgs[0].sort_order}">Mettre en couverture</button>`:""}<button type="button" class="btn btn-line danger" data-delimg="${i.id}" data-path="${esc(i.storage_path)}">Retirer</button></div>`).join("")}</div>`:""}
 <p class="status full" role="status"></p><button class="btn btn-acc full" type="submit">Enregistrer</button></form></div></section>`};
   }
+  const [{data:od},{data:sp},{data:rp}]=await Promise.all([sb.from("deals").select("id,stage,checklist").not("stage","in","(delivered,lost)"),sb.from("order_signatures").select("id").eq("status","pending"),sb.from("reviews").select("id").eq("status","pending")]);
+  const inc=(od||[]).filter(x=>Object.values(x.checklist||{}).filter(Boolean).length<Object.keys(CHK).length).length;
+  const todo=[[nNew||0,"nouvelle(s) demande(s)","#/agence?tab=demandes"],[inc,"dossier(s) avec pièces manquantes","#/agence?tab=dossiers"],[(sp||[]).length,"bon(s) de commande en attente de signature","#/agence?tab=dossiers"],[(rp||[]).length,"avis à modérer","#/agence?tab=avis"]].filter(x=>x[0]>0);
+  const todoHtml=`<div class="info" style="margin-bottom:24px"><b>À faire aujourd'hui</b>${todo.length?`<ul class="checks" style="margin-top:10px">${todo.map(([k,l,h])=>`<li><a href="${h}"><b>${k}</b> ${l}</a></li>`).join("")}</ul>`:'<p class="m" style="margin:8px 0 0">Rien d\'urgent : tout est à jour ✓</p>'}</div>`;
   const n={sold:0,available:0};all.forEach(v=>n[v.status]!==undefined&&n[v.status]++);
   return{title:t,html:pageHead("Espace agence",`${all.length} véhicule${all.length>1?"s":""} · ${n.available} disponible${n.available>1?"s":""} · ${n.sold} vendu${n.sold>1?"s":""}`)+`<section class="section"><div class="wrap">${tabs("v")}<div class="actions" style="margin-top:0"><a class="btn btn-acc" href="#/agence?new=1">Ajouter un véhicule</a><button class="btn btn-line" data-logout>Se déconnecter</button></div>
-<div class="kpis"><div class="kpi"><b>${all.length}</b><span>Véhicules</span></div><div class="kpi"><b>${n.available}</b><span>Disponibles</span></div><div class="kpi"><b>${n.sold}</b><span>Vendus</span></div><div class="kpi hot"><b>${nNew||0}</b><span>Nouvelles demandes</span></div></div><div class="tools"><input id="vsearch" type="search" placeholder="Rechercher un véhicule…" aria-label="Rechercher"></div><div class="alist">${all.map(row).join("")||"<p>Aucun véhicule. Ajoutez le premier.</p>"}</div></div></section>`};
+${todoHtml}<div class="kpis"><div class="kpi"><b>${all.length}</b><span>Véhicules</span></div><div class="kpi"><b>${n.available}</b><span>Disponibles</span></div><div class="kpi"><b>${n.sold}</b><span>Vendus</span></div><div class="kpi hot"><b>${nNew||0}</b><span>Nouvelles demandes</span></div></div><div class="tools"><input id="vsearch" type="search" placeholder="Rechercher un véhicule…" aria-label="Rechercher"></div><div class="alist">${all.map(row).join("")||"<p>Aucun véhicule. Ajoutez le premier.</p>"}</div></div></section>`};
 }
 function bindVeh(f){
   const v=editing||{};
@@ -919,11 +953,22 @@ document.addEventListener("submit",async e=>{const f=e.target;if(!f.matches("[da
 document.addEventListener("change",e=>{if(e.target.id!=="f-photos")return;const p=$("#prev");if(!p)return;const fl=[...e.target.files];p.innerHTML=fl.slice(0,30).map(f=>`<div><img src="${URL.createObjectURL(f)}" alt=""><span class="m" style="display:block;padding:6px 8px;font-size:12px">${(f.size/1048576).toFixed(1)} Mo</span></div>`).join("");const d=$("#drop b");if(d)d.textContent=fl.length?`${fl.length} photo(s) prête(s)`:"+ Ajouter des photos"});
 ["dragover","dragleave","drop"].forEach(t=>document.addEventListener(t,e=>{const z=e.target.closest&&e.target.closest("#drop");if(!z)return;e.preventDefault();z.classList.toggle("on",t==="dragover");if(t==="drop"){const i=$("#f-photos");i.files=e.dataTransfer.files;i.dispatchEvent(new Event("change",{bubbles:true}))}}));
 document.addEventListener("click",async e=>{const c=e.target.closest("[data-cover]");if(!c||!sb)return;await sb.from("vehicle_images").update({sort_order:+c.dataset.min-1}).eq("id",c.dataset.cover);cache=null;router()});
+
+const ficheData=f=>{const d=Object.fromEntries(new FormData(f)),n=k=>d[k]===""||d[k]==null?null:+d[k],t=k=>d[k]||null;return{vehicle_id:window._fv.id,plate:t("plate"),vin:t("vin"),first_reg_date:t("first_reg_date"),purchased_at:t("purchased_at"),purchase_price:n("purchase_price"),prep_cost:n("prep_cost"),purchase_payment:t("purchase_payment"),seller_name:t("seller_name"),seller_address:t("seller_address")}};
+document.addEventListener("submit",async e=>{const f=e.target;if(!f.matches("[data-fiche]")||!sb)return;e.preventDefault();const st=$(".status",f),{error}=await sb.from("vehicle_costs").upsert(ficheData(f),{onConflict:"vehicle_id"});st.textContent=error?"Échec : exécutez supabase_fiche.sql.":"Fiche enregistrée ✓";st.className="status full "+(error?"ko":"ok")});
+document.addEventListener("click",async e=>{if(!sb)return;const l=e.target.closest("[data-fiche-lp]"),dl=e.target.closest("[data-fiche-deal]");
+  if(l){const f=$("[data-fiche]"),d=ficheData(f);if(!d.seller_name){alert("Indiquez le nom du vendeur.");return}
+    const {error}=await sb.from("police_register").insert({entry_type:"achat",occurred_on:d.purchased_at||new Date().toISOString().slice(0,10),brand_model:window._fv.t,vin:d.vin,plate:d.plate,first_reg_date:d.first_reg_date,mileage:window._fv.mileage||null,counterparty_name:d.seller_name,counterparty_address:d.seller_address,price:d.purchase_price,payment_mode:d.purchase_payment,note:"Pièce d'identité du vendeur à compléter"});
+    alert(error?"Échec : exécutez supabase_compta.sql.":"Achat inscrit au livre de police ✓ (complétez la pièce d'identité du vendeur).");if(!error)router()}
+  if(dl){const f=$("[data-fiche]"),d=ficheData(f),{data,error}=await sb.from("deals").insert({vehicle_id:window._fv.id,client_name:"Nouveau client",price:window._fv.price||null,plate:d.plate,vin:d.vin,first_reg_date:d.first_reg_date,mileage:window._fv.mileage||null}).select("id").single();if(error){alert("Création impossible : exécutez supabase_cerfa.sql.");return}nav("/agence?deal="+data.id)}});
 /* ---------- Routeur ---------- */
 function parse(){const [p,qs=""]=here().replace(/^\//,"").split("?");return{parts:p.split("/").filter(Boolean),q:Object.fromEntries(new URLSearchParams(qs))}}
 const go=(path,o)=>{const p=new URLSearchParams(Object.entries(o).filter(([,x])=>x));nav(path+(p.toString()?"?"+p:""))};
 const syncHH=()=>document.documentElement.style.setProperty("--hh",($(".header")?.offsetHeight||72)+"px");
-(()=>{const b=$("#appbar");try{if(!localStorage.getItem("appbar")&&b)b.hidden=false}catch(_){if(b)b.hidden=false}syncHH();addEventListener("resize",syncHH);$("#appbar-x")?.addEventListener("click",()=>{b.hidden=true;try{localStorage.setItem("appbar","1")}catch(_){}syncHH()})})();
+(()=>{const b=$("#appbar");const stand=matchMedia("(display-mode: standalone)").matches||navigator.standalone;try{if(!localStorage.getItem("appbar")&&!stand&&b)b.hidden=false}catch(_){if(b)b.hidden=false}syncHH();addEventListener("resize",syncHH);$("#appbar-x")?.addEventListener("click",()=>{b.hidden=true;try{localStorage.setItem("appbar","1")}catch(_){}syncHH()})})();
+let dip=null;addEventListener("beforeinstallprompt",e=>{e.preventDefault();dip=e});
+$("#appinstall")?.addEventListener("click",async e=>{e.preventDefault();if(dip){dip.prompt();await dip.userChoice;dip=null;return}alert(/iphone|ipad|ipod/i.test(navigator.userAgent)?"Touchez le bouton Partager de Safari, puis « Sur l'écran d'accueil ».":"Ouvrez le menu de votre navigateur et choisissez « Installer l'application » ou « Ajouter à l'écran d'accueil ».")});
+if("serviceWorker"in navigator&&/^https?:/.test(location.protocol))addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));
 const ogm=(p,v)=>{if(!v)return;let m=$(`meta[property="${p}"]`);if(!m){m=document.createElement("meta");m.setAttribute("property",p);document.head.append(m)}m.content=v};
 function meta(name,val){let m=$(`meta[name=${name}]`);if(m&&val)m.content=val}
 async function brandPage(b,q){const p=await catalogue({...q,brand:b});p.title=`${b} d'occasion — ${SITE.name}`;p.desc=`Découvrez nos ${b} d'occasion : prix, kilométrage, année et garantie. ${SITE.name}.`;return p}
