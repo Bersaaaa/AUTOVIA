@@ -37,6 +37,18 @@ Exécutez `supabase_pilotage.sql`. Onglet « Pilotage » (CA, marge, stock, jour
 
 Exécutez `supabase_compta.sql`. Onglets « Livre de police » (ajout seul, export CSV), « Compta » (recettes, dépenses, TVA indicative, export) et « Conformité » (pense-bête). Faites valider le registre électronique avec votre comptable.
 
+## Signature électronique et avis
+
+Exécutez `supabase_signature_avis.sql`. Dossier de vente : « Envoyer le bon de commande à signer » ; le client signe dans « Mon compte ». La preuve (date serveur, empreinte SHA-256, adresse IP, signature) est conservée et le document signé n'est plus modifiable. Avis : déposés par les clients après livraison, publiés après modération (onglet Avis).
+
+## Visibilité Google
+
+Après chaque ajout de véhicule : `SITE_URL=… SUPABASE_URL=… SUPABASE_ANON_KEY=… node scripts/prerender.mjs` puis `node scripts/generate-sitemap.mjs`, et redéployez. Cela crée une page statique par véhicule et par marque (`/marque/Peugeot`). Déclarez ensuite `sitemap.xml` dans Google Search Console. Les résultats dépendent de votre contenu (photos, descriptions) et prennent du temps.
+
+## Photos
+
+Les photos sont réduites (1600 px, WebP) avant envoi. Choisissez la couverture avec « Mettre en couverture ».
+
 ## Référencement et URL propres
 
 Le site utilise des URL propres (`/acheter`, `/vehicule/mon-slug`). Il faut que l'hébergeur renvoie toutes les pages vers `index.html` :
