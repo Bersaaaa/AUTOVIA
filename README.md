@@ -185,3 +185,6 @@ Exécuter `supabase_v12.sql` (paramètres, historique des mails, agenda, demande
 - Déposez les PDF officiels remplissables dans `cerfa/` (noms et mode d'emploi : `cerfa/LISEZMOI.txt`). Les boutons Cerfa du dossier téléchargent alors le PDF pré-rempli sans import. Association automatique d'après le nom des champs (à vérifier), ou exacte via `map` dans `cerfa/index.json` (`node scripts/cerfa-fields.mjs` liste les champs). L'import dans « Modèles Cerfa » reste possible et prioritaire.
 - L'onglet « Conformité » a été retiré.
 - La barre de recherche de l'agence cherche aussi dans les dossiers (nom, plaque, VIN) et les véhicules.
+
+### Cerfa fournis (octobre 2026)
+`cerfa/` contient les PDF 15776*01, 13750*07, 13757*03 et 13751*01 avec leurs associations. 15776 et 13757 : champs remplis directement ; 13750 et 13751 (PDF à plat) : texte superposé. Cases à cocher non remplies. À VÉRIFIER : versions en vigueur sur service-public.fr.

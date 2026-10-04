@@ -957,7 +957,7 @@ ${alh}<div class="attools"><button class="btn btn-line" data-ball>Cocher tout</b
       const EXP=[["15776","Déclaration de cession"],["13750","Demande de certificat d'immatriculation"],["13757","Mandat d'immatriculation"],["13751","Déclaration d'achat Pro-Pro"]];
       const cb=([n,l])=>`<button type="button" class="dlk" data-cerfa="${n}">${l} · CERFA ${n}</button>`;
       const pb=x=>`<button type="button" class="dlk" data-print="${x}">${x}</button>`;
-      const CF=(n,v,l)=>`<button type="button" class="dlk" data-cerfa="${n}">${l} · CERFA ${n}*${v}</button>`;
+      const CF=(n,v,l)=>`<button type="button" class="dlk" data-cerfa="${n}">${l} · CERFA ${n}</button>`;
       const upl=(kind,path,no,label)=>path?`<button type="button" class="dlk" data-getdoc="${esc(path)}">${label} n° ${esc(no||"—")} · voir</button><label class="dlk off">Remplacer le fichier<input type="file" hidden data-invup="${kind}" accept="application/pdf,image/*"></label>`:`<label class="dlk">${label} : importer la mienne<input type="file" hidden data-invup="${kind}" accept="application/pdf,image/*"></label>`;
       const lk=(url,label,key)=>url?`<button type="button" class="dlk" data-ext="${esc(url)}"${key==="financing"?' data-copy="deal"':""}>${label}</button>`:`<button type="button" class="dlk off" data-noext="${key}">${label} <small>(lien à configurer)</small></button>`;
       const nSiv=(await sb.from("siv_requests").select("id",{count:"exact",head:true}).eq("deal_id",d.id)).count||0;
@@ -1358,26 +1358,45 @@ document.addEventListener("click",async e=>{if(!sb)return;const d=e.target.close
   const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//SBR//Agenda//FR","BEGIN:VEVENT","UID:"+a.id+"@agenda","DTSTAMP:"+dt(new Date()),"DTSTART:"+dt(s0),"DTEND:"+dt(e0),"SUMMARY:"+tx((APK[a.kind]||"RDV")+" - "+a.client_name),"DESCRIPTION:"+tx([a.vehicle_label,a.client_phone,a.notes].filter(Boolean).join("\n")),"LOCATION:"+tx(SITE.address),"BEGIN:VALARM","TRIGGER:-P1D","ACTION:DISPLAY","DESCRIPTION:Rappel rendez-vous demain","END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n");
   const l=document.createElement("a");l.href=URL.createObjectURL(new Blob([ics],{type:"text/calendar"}));l.download="rdv.ics";l.click()}});
 
-const CERFA_LIST=[["15776","02","Déclaration de cession"],["13750","07","Demande de certificat d'immatriculation"],["13757","03","Mandat d'immatriculation"],["13751","02","Déclaration d'achat Pro-Pro"]];
+
+const addrParse=s=>{const m=String(s||"").match(/^\s*(\d+)\s*(bis|ter|quater)?[ ,]+(\S+)\s+(.+?),?\s*(\d{5})\s+(.+?)\s*$/i);return m?{no:m[1],ext:m[2]||"",type:m[3],name:m[4].replace(/,\s*$/,""),zip:m[5],city:m[6]}:{no:"",ext:"",type:"",name:String(s||""),zip:"",city:""}};
+const dparts=v=>{const m=String(v||"").match(/^(\d{4})-(\d{2})-(\d{2})/);return m?[m[3],m[2],m[1]]:["","",""]};
+const party=(d,who)=>{const ag=(who==="acq")===isBuy(d);
+ if(ag){const a=addrParse(SITE.address);return{id:SITE.legal.company||SITE.name,siret:String(SITE.legal.siret||"").replace(/\D/g,""),...a,birth:"",birthPlace:"",dept:"",country:"",email:SITE.email,phone:SITE.phone}}
+ const a=addrParse(d.client_address);return{id:d.client_name,siret:String(d.client_siren||"").replace(/\D/g,""),no:d.street_no||a.no,ext:d.street_ext||a.ext,type:d.street_type||a.type,name:d.street_name||a.name,zip:d.client_zip||a.zip,city:d.client_city||a.city,birth:d.client_birth_date,birthPlace:d.client_birth_place,dept:d.client_birth_dept,country:d.client_birth_country,email:d.client_email,phone:d.client_phone}};
+(()=>{const add={};const nw=()=>new Date();
+ for(const w of ["ced","acq"]){const L=w==="ced"?"Cédant/vendeur":"Acquéreur/acheteur",P=d=>party(d,w);
+  Object.assign(add,{[w+"_id"]:[L+" : identité",d=>P(d).id],[w+"_siret"]:[L+" : SIRET",d=>P(d).siret],[w+"_siren"]:[L+" : SIREN",d=>P(d).siret.slice(0,9)],[w+"_no"]:[L+" : n° de voie",d=>P(d).no],[w+"_ext"]:[L+" : extension (bis, ter)",d=>P(d).ext],[w+"_type"]:[L+" : type de voie",d=>P(d).type],[w+"_street"]:[L+" : nom de la voie",d=>P(d).name],[w+"_zip"]:[L+" : code postal",d=>P(d).zip],[w+"_city"]:[L+" : commune",d=>P(d).city],[w+"_phone"]:[L+" : téléphone",d=>P(d).phone],[w+"_email"]:[L+" : e-mail",d=>P(d).email],
+   [w+"_birth_place"]:[L+" : lieu de naissance",d=>P(d).birthPlace],[w+"_birth_dept"]:[L+" : département de naissance",d=>P(d).dept],[w+"_birth_country"]:[L+" : pays de naissance",d=>P(d).country],[w+"_birth_d"]:[L+" : jour de naissance",d=>dparts(P(d).birth)[0]],[w+"_birth_m"]:[L+" : mois de naissance",d=>dparts(P(d).birth)[1]],[w+"_birth_y"]:[L+" : année de naissance",d=>dparts(P(d).birth)[2]]})}
+ Object.assign(add,{brand:["Véhicule : marque",d=>(d.veh||{}).brand],commercial:["Véhicule : dénomination commerciale",d=>(d.veh||{}).model],version:["Véhicule : type, variante, version",d=>(d.veh||{}).version],
+  reg_d:["1re immatriculation : jour",d=>dparts(d.first_reg_date)[0]],reg_m:["1re immatriculation : mois",d=>dparts(d.first_reg_date)[1]],reg_y:["1re immatriculation : année",d=>dparts(d.first_reg_date)[2]],
+  today_d:["Date du jour : jour",()=>String(nw().getDate()).padStart(2,"0")],today_m:["Date du jour : mois",()=>String(nw().getMonth()+1).padStart(2,"0")],today_y:["Date du jour : année",()=>String(nw().getFullYear())],
+  lieu:["Lieu (ville de l'agence)",()=>addrParse(SITE.address).city],country:["Pays : France",()=>"France"],nature:["Nature de l'opération (mandat)",()=>"Demande de certificat d'immatriculation (changement de titulaire)"]});
+ Object.assign(CKEYS,add)})();
+const CERFA_LIST=[["15776","","Déclaration de cession"],["13750","","Demande de certificat d'immatriculation"],["13757","","Mandat d'immatriculation"],["13751","","Déclaration d'achat Pro-Pro"]];
 const cget=async u=>{try{const r=await fetch(u,{cache:"no-store"});return r.ok?r:null}catch(e){return null}};
 const cidx=async()=>{const r=await cget("cerfa/index.json");try{return r?await r.json():{}}catch(e){return {}}};
 const cpdf=async(n,idx)=>{const e=idx[n];if(!e)return null;const r=await cget("cerfa/"+e.file);if(!r)return null;const ab=await r.arrayBuffer();return new TextDecoder().decode(ab.slice(0,4))==="%PDF"?{ab,e}:null};
-async function cerfaStatus(){const box=$("#cbl");if(!box)return;const idx=await cidx();const rows=await Promise.all(CERFA_LIST.map(async([n,v,l])=>{const f=await cpdf(n,idx);return `<p style="margin:4px 0">${f?"✓":"✗"} <b>Cerfa ${n}*${v}</b> · ${l} : ${f?"PDF installé"+(f.e.map&&Object.keys(f.e.map).length?" (champs associés)":" (association automatique à vérifier)"):"PDF à déposer dans le dossier cerfa/ du site"}</p>`}));box.innerHTML=rows.join("")+'<p class="m" style="margin-top:8px">Les PDF officiels se téléchargent sur service-public.fr. Voir cerfa/LISEZMOI.txt.</p>'}
+async function cerfaStatus(){const box=$("#cbl");if(!box)return;const idx=await cidx();const rows=await Promise.all(CERFA_LIST.map(async([n,v,l])=>{const f=await cpdf(n,idx);return `<p style="margin:4px 0">${f?"✓":"✗"} <b>Cerfa ${n}${f&&f.e.version?"*"+f.e.version:""}</b> · ${l} : ${f?"PDF installé"+((f.e.map&&Object.keys(f.e.map).length)||(f.e.overlay&&f.e.overlay.length)?" (champs associés)":" (association automatique à vérifier)"):"PDF à déposer dans le dossier cerfa/ du site"}</p>`}));box.innerHTML=rows.join("")+'<p class="m" style="margin-top:8px">Les PDF officiels se téléchargent sur service-public.fr. Voir cerfa/LISEZMOI.txt.</p>'}
 const autoMap=names=>{const nz=x=>x.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase(),m={};names.forEach(n=>{const z=nz(n),sell=/(cedant|vendeur|ancien|proprietaire actuel)/.test(z);let k=null;
  if(/(immat|plaque)/.test(z)&&!/date/.test(z))k="plate";else if(/(\bvin\b|numero.*serie|serie)/.test(z))k="vin";else if(/date.*(premiere|1ere|1re).*immat/.test(z))k="first_reg_date";else if(/(marque|modele)/.test(z))k="model";else if(/(kilom|\bkm\b)/.test(z))k="mileage";else if(/(\bprix\b|montant)/.test(z))k="price";else if(/date.*(cession|vente|achat)/.test(z)||z==="date")k="today";
  else if(/(siret|siren)/.test(z))k=sell?"seller_siret":"buyer_siren";else if(/naissance/.test(z)&&/(lieu|commune)/.test(z))k="buyer_birth_place";else if(/naissance/.test(z)&&/date/.test(z))k="buyer_birth_date";else if(/(code.?postal|\bcp\b)/.test(z))k="buyer_zip";else if(/(ville|commune)/.test(z))k="buyer_city";else if(/(mail|courriel)/.test(z))k="buyer_email";else if(/(tel|portable|mobile)/.test(z))k="buyer_phone";else if(/(adresse|rue|voie)/.test(z))k=sell?"seller_address":"buyer_address";else if(/(raison.?sociale|nom|prenom|denomination)/.test(z))k=sell?"seller_name":"buyer_name";
  if(k)m[n]=k});return m};
 document.addEventListener("click",async e=>{const b=e.target.closest("[data-cerfa]");if(!b||!sb)return;const n=b.dataset.cerfa,d=window._deal;if(!d)return;b.disabled=true;
- try{await loadPdfLib();let bytes,map,name;
+ try{await loadPdfLib();let bytes,map,name,ent=null;
   const {data:ct}=await sb.from("cerfa_templates").select("*"),c=(ct||[]).find(x=>x.name.includes(n));
   if(c){const {data:f}=await sb.storage.from("cerfa-templates").download(c.storage_path);bytes=await f.arrayBuffer();map=c.mapping&&Object.keys(c.mapping).length?c.mapping:null;name=c.name}
-  else{const f=await cpdf(n,await cidx());if(f){bytes=f.ab;map=f.e.map&&Object.keys(f.e.map).length?f.e.map:null;name=f.e.name||"Cerfa "+n}}
+  else{const f=await cpdf(n,await cidx());if(f){bytes=f.ab;ent=f.e;map=f.e.map&&Object.keys(f.e.map).length?f.e.map:(f.e.overlay&&f.e.overlay.length?{}:null);name=f.e.name||"Cerfa "+n}}
   if(!bytes){alert(`Le PDF du Cerfa ${n} n'est pas encore installé : déposez le fichier officiel dans le dossier « cerfa » du site (voir cerfa/LISEZMOI.txt) ou importez-le dans Agence › Modèles Cerfa.`);return}
-  const pdf=await PDFLib.PDFDocument.load(bytes,{ignoreEncryption:true}),form=pdf.getForm(),names=form.getFields().filter(x=>x instanceof PDFLib.PDFTextField).map(x=>x.getName());
-  if(!names.length){alert("Ce PDF n'a pas de champs remplissables (formulaire XFA ou scanné). Utilisez la version remplissable de service-public.fr.");return}
-  const mp=map||autoMap(names);let nf=0;Object.entries(mp).forEach(([fn,k])=>{try{const v=CKEYS[k]&&CKEYS[k][1](d);if(v!=null&&v!==""){form.getTextField(fn).setText(String(v));nf++}}catch(_){}});
+  const pdf=await PDFLib.PDFDocument.load(bytes,{ignoreEncryption:true}),form=pdf.getForm(),names=form.getFields().filter(x=>x instanceof PDFLib.PDFTextField).map(x=>x.getName()),ov=(ent&&ent.overlay)||[];
+  if(!names.length&&!ov.length){alert("Ce PDF n'a pas de champs remplissables (formulaire XFA ou scanné). Utilisez la version remplissable de service-public.fr.");return}
+  const val=k=>{try{const v=CKEYS[k]&&CKEYS[k][1](d);return v==null?"":String(v)}catch(_){return ""}},short=n=>n.replace(/^topmostSubform\[0\]\.Page\d+\[0\]\./,"").replace(/\[0\]$/,"");
+  const mp=map||autoMap(names);let nf=0;names.forEach(fn=>{const k=mp[fn]||mp[short(fn)];if(!k)return;const v=val(k);if(v!==""){try{form.getTextField(fn).setText(v);nf++}catch(_){}}});
+  if(ov.length){const font=await pdf.embedFont(PDFLib.StandardFonts.Helvetica);ov.forEach(o=>{const t=val(o.k);if(!t)return;const pg=pdf.getPage(o.p||0),H=pg.getHeight(),y=H-o.y+2.2;
+   if(o.c){[...t].slice(0,o.c.length).forEach((ch,i)=>{const [a,b]=o.c[i],w=font.widthOfTextAtSize(ch,10);pg.drawText(ch,{x:(a+b)/2-w/2,y,size:10,font,color:PDFLib.rgb(0,0,.55)})})}
+   else{let sz=o.s||9;const w=font.widthOfTextAtSize(t,sz);if(o.w&&w>o.w)sz=Math.max(5,sz*o.w/w);pg.drawText(t,{x:o.x+1,y,size:sz,font,color:PDFLib.rgb(0,0,.55)})}nf++})}
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([await pdf.save()],{type:"application/pdf"}));a.download=`${name} - ${d.client_name}.pdf`.replace(/[\\/:*?"<>|]/g,"");a.click();
-  if(!map)setTimeout(()=>alert(`${nf} champ(s) pré-rempli(s) par association automatique : vérifiez le document avant de le signer ou de le transmettre.`),300)
+  setTimeout(()=>alert(map===null?`${nf} champ(s) pré-rempli(s) par association automatique : vérifiez le document avant de le signer ou de le transmettre.`:`${nf} champ(s) pré-rempli(s). Vérifiez le document, cochez les cases à la main (type de personne, sexe, cases optionnelles) et complétez ce qui manque avant de le signer.`),300)
  }catch(err){console.error(err);alert("Remplissage impossible.")}b.disabled=false});
 
 let gsT;
