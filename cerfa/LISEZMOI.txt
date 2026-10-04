@@ -1,0 +1,16 @@
+CERFA INTEGRES AU SITE
+======================
+Fichiers fournis (PDF officiels telecharges par le proprietaire du site) :
+  cerfa_15776.pdf  Cerfa 15776*01  Declaration de cession      (formulaire remplissable : champs associes dans index.json)
+  cerfa_13750.pdf  Cerfa 13750*07  Demande de certificat d'immatriculation (PDF a plat : texte superpose, positions dans index.json "overlay")
+  cerfa_13757.pdf  Cerfa 13757*03  Mandat d'immatriculation    (formulaire remplissable)
+  cerfa_13751.pdf  Cerfa 13751*01  Declaration d'achat         (PDF a plat : texte superpose)
+
+A VERIFIER : verifiez sur service-public.fr que ces versions sont toujours les versions en vigueur (15776 et 13751 sont en version *01).
+Pour changer de version : remplacez le PDF, puis adaptez index.json (les positions "overlay" ne valent que pour la version fournie).
+
+Fonctionnement
+- Le bouton « CERFA xxxxx » d'un dossier telecharge le PDF pre-rempli (cedant/acquereur selon le type de dossier : vente = agence cedante, achat = agence acquereuse).
+- Les cases a cocher (type de personne, sexe, options) ne sont PAS remplies : a cocher a la main. Heure de la vente et numero de formule : a completer a la main.
+- Verifiez toujours le document avant de le signer ou de le transmettre.
+- Outil : node scripts/cerfa-fields.mjs liste les champs d'un PDF remplissable.
