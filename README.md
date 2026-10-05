@@ -206,3 +206,11 @@ la racine du site contient les PDF 15776*01, 13750*07, 13757*03 et 13751*01 avec
 
 ## Tampon, signature et logo assurance (v15)
 Agence › Paramètres : importez votre tampon + signature (PNG/JPG) et le logo de l'assureur partenaire, puis réglez le lien de devis (Direct Assurance : À VÉRIFIER). Le tampon s'imprime sur devis, bon de commande, facture, bon de livraison, attestation, quitus, garantie, et sur les Cerfa 15776 et 13751 (case « signature du vendeur/cédant » ou « acquéreur » selon le dossier). Les Cerfa 13750 et 13757 sont signés par le client : pas de tampon.
+
+## v16 : cases Cerfa, scan, marge, tableau de bord, rappels
+- **SQL à lancer :** `supabase_v13.sql` (commission, autres frais, date de contrôle technique, relance devis).
+- **Cerfa pré-cochés** : 15776 (personne physique/morale, sexe, « céder », présence du certificat), 13750 (« Certificat », type et sexe du titulaire), 13751 (acheté, présence du certificat, « professionnel du commerce » pour un achat). Les déclarations sur l'honneur (« certifie en outre », « je suis informé… ») ne sont JAMAIS cochées : c'est au signataire. La case « présence du certificat : OUI » est cochée par défaut : décochez-la à la main si la carte grise manque. Vérifiez toujours le PDF.
+- **Scan dans le dossier** : boutons « Scanner la pièce d'identité » / « Scanner la carte grise » (fonction `read-registration` mise à jour : redéployez `fn-read-registration.ts`). La pièce d'identité renvoie nom, prénom, naissance, sexe ; jamais le numéro du document ; rien n'est conservé. ESTIMATION : vérifiez chaque champ.
+- **Marge réelle** (dossier) = prix de vente − achat − remise en état − autres frais − commission, avec alerte sous le seuil réglé dans Paramètres (500 € par défaut). TVA sur marge : à valider avec votre comptable.
+- **Statistique** : navigation par mois, comparaison avec le mois précédent, délai moyen de vente, liste des véhicules > 60 j.
+- **Rappels** : alertes du Bureau (devis sans réponse ≥ 3 j, garantie < 30 j, contrôle technique à refaire, marge sous le seuil) + e-mail quotidien à l'agence via `send-reminders` (redéployez `fn-send-reminders.ts`). Relance automatique du client : désactivée par défaut, à cocher dans Paramètres ; une seule relance par devis. Règle CT (CERTAIN) : contrôle technique de moins de 6 mois pour vendre un véhicule de plus de 4 ans.
