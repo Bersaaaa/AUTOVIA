@@ -29,6 +29,7 @@ Collez et exécutez les fichiers **un par un, dans cet ordre** (relancer un fich
 11. [ ] `supabase_bureau.sql`
 12. [ ] `supabase_v12.sql` (paramètres, agenda, mails)
 13. [ ] `supabase_v13.sql` (marge réelle, contrôle technique, relance devis)
+14. [ ] `supabase_v14.sql` (archivage des documents d'identité et Cerfa, livre de police modifiable avec historique)
 
 Si une page affiche « exécutez supabase_xxx.sql », c'est qu'un fichier manque dans cette liste.
 
@@ -42,6 +43,8 @@ Si une page affiche « exécutez supabase_xxx.sql », c'est qu'un fichier manque
 ## 4. Premiers réglages dans le site (Agence › Paramètres)
 
 - [ ] Nom commercial (SBR CAR…), raison sociale, forme juridique, capital, **SIRET**, RCS, TVA, dirigeant, adresse complète (format « 12 avenue X, 92230 Ville »), téléphone, e-mail.
+- [ ] **Logo de la société** : imprimé en en-tête de tous les documents (devis, bon de commande, facture, livraison, garantie, attestation, quitus).
+- [ ] Mention TVA, conditions générales de vente, délai de livraison, validité des devis : des textes par défaut sont fournis et imprimés ; adaptez-les (CGV et mention TVA à faire valider par un professionnel, À VÉRIFIER).
 - [ ] **Tampon + signature** (photo ou PNG) : imprimé sur les devis, bons de commande, factures, garanties… et dans les Cerfa 15776 et 13751.
 - [ ] **Logo de l'assureur** (Direct Assurance) et **lien du devis** (à vérifier : par défaut `https://www.direct-assurance.fr`).
 - [ ] **Marge minimale** par véhicule (500 € par défaut) : sous ce seuil, une alerte s'affiche.
@@ -101,6 +104,11 @@ Secrets (Edge Functions › Secrets) :
 5. [ ] Dossier › « Envoyer un e-mail au client » avec votre propre adresse.
 6. [ ] Agenda : créer un rendez-vous pour demain, puis lancer la fonction `send-reminders` à la main pour voir le mail.
 7. [ ] Statistique : le mois affiche le chiffre d'affaires et la marge.
+
+## 9 bis. Documents archivés et livre de police
+- Dossier › « Documents archivés » : pièce d'identité, carte grise, Cerfa achat / vente, autre. Les Cerfa générés et les photos scannées sont archivés automatiquement ; vous pouvez aussi importer un fichier (appareil photo ou PDF). Stockage PRIVÉ, réservé à l'agence. Ils apparaissent aussi dans la fiche du véhicule.
+- RGPD (À VÉRIFIER) : fixez une durée de conservation (le livre de police se conserve en général 5 ans) et supprimez les pièces d'identité au-delà.
+- Livre de police : ✎ modifier, ⊖ supprimer. Chaque changement est gardé dans l'historique en bas de page. Préférez corriger plutôt que supprimer.
 
 ## 10. Ce qui n'est PAS fait automatiquement
 
