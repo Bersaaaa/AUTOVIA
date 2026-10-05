@@ -62,7 +62,7 @@ Supabase › Edge Functions › « Deploy a new function » : donnez le nom du t
 | `fn-estimate-vehicle.ts` | `estimate-vehicle` | activé |
 | `fn-read-registration.ts` | `read-registration` | activé |
 | `fn-send-client-mail.ts` | `send-client-mail` | activé |
-| `fn-public-carte-grise.ts` | `public-carte-grise` | **désactivé** |
+| `fn-public-carte-grise.ts` | `public-carte-grise` | **désactivé** (à REDÉPLOYER : nouvelle version du parcours carte grise) |
 | `fn-send-reminders.ts` | `send-reminders` | **désactivé** |
 
 Secrets (Edge Functions › Secrets) :
@@ -109,6 +109,14 @@ Secrets (Edge Functions › Secrets) :
 - Dossier › « Documents archivés » : pièce d'identité, carte grise, Cerfa achat / vente, autre. Les Cerfa générés et les photos scannées sont archivés automatiquement ; vous pouvez aussi importer un fichier (appareil photo ou PDF). Stockage PRIVÉ, réservé à l'agence. Ils apparaissent aussi dans la fiche du véhicule.
 - RGPD (À VÉRIFIER) : fixez une durée de conservation (le livre de police se conserve en général 5 ans) et supprimez les pièces d'identité au-delà.
 - Livre de police : ✎ modifier, ⊖ supprimer. Chaque changement est gardé dans l'historique en bas de page. Préférez corriger plutôt que supprimer.
+
+## 9 ter. Page publique « Carte grise » (duplicata et changement d'adresse)
+- Adresse du site : `/carte-grise` (parcours : démarche › particulier ou société › informations › documents envoyés depuis le téléphone › récapitulatif du prix › envoi) et `/suivi-carte-grise` (suivi par numéro de dossier + e-mail, avec envoi des pièces manquantes).
+- Aucun paiement en ligne : le client reçoit un lien de paiement de votre part après vérification (Stripe n'est pas branché ici).
+- [ ] Redéployez `fn-public-carte-grise.ts` (Verify JWT désactivé) ; secrets `RESEND_API_KEY`, `SIV_TO_EMAIL`, `SIV_FROM_EMAIL`, `SITE_URL`.
+- [ ] Prix : Paramètres › « Carte grise : prix… » (50 € duplicata et 25 € changement d'adresse par défaut, repris de SBR CARTE GRISE). Frais de l'État affichés : 13,76 € pour un duplicata, 0 € pour un changement d'adresse : **À VÉRIFIER** sur service-public.gouv.fr avant mise en ligne.
+- Les demandes arrivent dans Agence › SIV avec leurs pièces (cliquez sur une pièce pour l'ouvrir) et un e-mail est envoyé à `SIV_TO_EMAIL`.
+- Habilitation : les démarches passent par un prestataire habilité (ePlaque Pro). Renseignez son nom dans Paramètres › « prestataire habilité » : il s'affiche sur la page. Gardez le mandat signé du client dans le dossier (le Cerfa 13757 sert de mandat).
 
 ## 10. Ce qui n'est PAS fait automatiquement
 
