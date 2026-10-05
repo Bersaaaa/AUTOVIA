@@ -1,6 +1,6 @@
 // Service worker : fonctionne hors connexion pour l'interface, jamais pour les données (Supabase).
 const V = "v1", SHELL = "shell-" + V, IMG = "img-" + V;
-self.addEventListener("install", (e) => { e.waitUntil(caches.open(SHELL).then((c) => c.addAll(["/", "/index.html", "/manifest.webmanifest", "/icons/icon-192.png"]).catch(() => {}))); self.skipWaiting(); });
+self.addEventListener("install", (e) => { e.waitUntil(caches.open(SHELL).then((c) => c.addAll(["/", "/index.html", "/manifest.webmanifest", "/icon-192.png"]).catch(() => {}))); self.skipWaiting(); });
 self.addEventListener("activate", (e) => { e.waitUntil(caches.keys().then((k) => Promise.all(k.filter((x) => ![SHELL, IMG].includes(x)).map((x) => caches.delete(x)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", (e) => {
   const r = e.request, u = new URL(r.url);

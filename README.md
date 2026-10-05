@@ -1,3 +1,19 @@
+# STRUCTURE À PLAT (aucun sous-dossier)
+Tous les fichiers sont à la racine : `index.html`, `sw.js`, `manifest.webmanifest`, les icônes `icon-192.png` etc., les 4 Cerfa `cerfa_xxxxx.pdf`, les fichiers SQL `supabase_*.sql` et les fonctions `fn-*.ts`.
+- **Hébergement :** déposez tout le contenu à la racine de votre dépôt GitHub / hébergeur.
+- **Cerfa :** les PDF et leurs associations (bloc `CERFA_IDX` dans index.html) sont déjà en place.
+- **Fonctions Supabase** (Supabase > Edge Functions > Deploy a new function > coller le fichier) :
+  | Fichier | Nom de la fonction | Verify JWT |
+  |---|---|---|
+  | fn-estimate-vehicle.ts | estimate-vehicle | oui |
+  | fn-send-siv-request.ts | send-siv-request | oui |
+  | fn-send-client-mail.ts | send-client-mail | oui |
+  | fn-read-registration.ts | read-registration | oui |
+  | fn-public-carte-grise.ts | public-carte-grise | **non** |
+  | fn-send-reminders.ts | send-reminders | **non** |
+  Les secrets (clés d'envoi de mail, ANTHROPIC_API_KEY, CRON_SECRET…) se saisissent dans Edge Functions > Secrets.
+- `generate-sitemap.mjs`, `prerender.mjs`, `cerfa-fields.mjs` sont des outils facultatifs (ligne de commande) ; `prerender.mjs` génère des dossiers : inutile si vous voulez rester à plat.
+
 # AUTOVIA — version Supabase
 
 ## Installation
@@ -43,7 +59,7 @@ Exécutez `supabase_signature_avis.sql`. Dossier de vente : « Envoyer le bon de
 
 ## Visibilité Google
 
-Après chaque ajout de véhicule : `SITE_URL=… SUPABASE_URL=… SUPABASE_ANON_KEY=… node scripts/prerender.mjs` puis `node scripts/generate-sitemap.mjs`, et redéployez. Cela crée une page statique par véhicule et par marque (`/marque/Peugeot`). Déclarez ensuite `sitemap.xml` dans Google Search Console. Les résultats dépendent de votre contenu (photos, descriptions) et prennent du temps.
+Après chaque ajout de véhicule : `SITE_URL=… SUPABASE_URL=… SUPABASE_ANON_KEY=… node prerender.mjs` puis `node generate-sitemap.mjs`, et redéployez. Cela crée une page statique par véhicule et par marque (`/marque/Peugeot`). Déclarez ensuite `sitemap.xml` dans Google Search Console. Les résultats dépendent de votre contenu (photos, descriptions) et prennent du temps.
 
 ## Photos
 
@@ -51,7 +67,7 @@ Les photos sont réduites (1600 px, WebP) avant envoi. Choisissez la couverture 
 
 ## Application (PWA)
 
-`manifest.webmanifest`, `sw.js` et `icons/` doivent être déployés à la racine du site, en HTTPS. Le bandeau « Installer » apparaît tant que l'application n'est pas installée. Remplacez les icônes dans `icons/` par votre logo. Les données (Supabase) ne sont jamais mises en cache hors ligne.
+`manifest.webmanifest`, `sw.js` et les fichiers `icon-*.png` doivent être déployés à la racine du site, en HTTPS. Le bandeau « Installer » apparaît tant que l'application n'est pas installée. Remplacez les fichiers `icon-192.png`, `icon-512.png`, `maskable-512.png` par votre logo. Les données (Supabase) ne sont jamais mises en cache hors ligne.
 
 ## Fiche véhicule agence
 
@@ -66,7 +82,7 @@ Exécutez `supabase_fiche.sql`. Bouton « Fiche » sur chaque véhicule : identi
 supabase secrets set RESEND_API_KEY=re_...
 supabase secrets set SIV_TO_EMAIL=adresse-de-la-boite-sbr-carte-grise
 supabase secrets set SIV_FROM_EMAIL="Demandes SIV <siv@votre-domaine.fr>"
-supabase functions deploy send-siv-request
+(Supabase → Edge Functions → New function → coller fn-send-siv-request.ts)
 ```
 Dans l'espace agence, onglet « SIV / Carte grise » (ou bouton « Demande SIV » dans un dossier) : créez la demande, ajoutez les pièces, puis « Envoyer à SBR CARTE GRISE ». Le site n'a pas d'accès direct au SIV.
 
@@ -82,7 +98,7 @@ Dans `index.html`, bloc `SITE`, renseignez `links:{financing, warranty, insuranc
 
 Le site utilise des URL propres (`/acheter`, `/vehicule/mon-slug`). Il faut que l'hébergeur renvoie toutes les pages vers `index.html` :
 `_redirects` (Netlify, Cloudflare Pages), `vercel.json` (Vercel) ou `.htaccess` (Apache, OVH). Le site doit être à la racine du domaine.
-Remplacez `VOTRE-DOMAINE` dans `robots.txt`, puis générez le plan du site : `SITE_URL=https://... SUPABASE_URL=... SUPABASE_ANON_KEY=... node scripts/generate-sitemap.mjs`.
+Remplacez `VOTRE-DOMAINE` dans `robots.txt`, puis générez le plan du site : `SITE_URL=https://... SUPABASE_URL=... SUPABASE_ANON_KEY=... node generate-sitemap.mjs`.
 
 ## Estimation avec Claude
 
@@ -162,7 +178,7 @@ Ajouter :
 
 ## Nouveautés (alertes, carte grise publique, simulateur, sauvegarde)
 - **Bureau → « À traiter »** : relances de dossiers (7 j sans activité), acomptes en attente (14 j), ventes sans facture importée, garanties du garage qui expirent (30 j), stock > 60 j, prix d'achat manquants, demandes SIV en brouillon.
-- **Page publique `/carte-grise`** : le formulaire appelle la fonction `public-carte-grise` (`supabase functions deploy public-carte-grise --no-verify-jwt`, mêmes secrets que `send-siv-request`, dont `SIV_TO_EMAIL` = boîte SBR CARTE GRISE). La demande est aussi enregistrée dans l'onglet SIV (limite : 30 demandes/heure, champ anti-robot).
+- **Page publique `/carte-grise`** : le formulaire appelle la fonction `public-carte-grise` (fonction `public-carte-grise` = contenu de `fn-public-carte-grise.ts`, Verify JWT désactivé, mêmes secrets que `send-siv-request`, dont `SIV_TO_EMAIL` = boîte SBR CARTE GRISE). La demande est aussi enregistrée dans l'onglet SIV (limite : 30 demandes/heure, champ anti-robot).
 - **Simulateur de mensualité** sur les fiches véhicule : taux d'exemple dans `SITE.sim` à remplacer. Mentions de crédit à faire valider (À VÉRIFIER).
 - **Photos** : flèches ← → pour réordonner, bouton « Mettre en couverture ».
 - **Pilotage** : coût réel, marge %, prix conseillé (ESTIMATION selon marge cible et jours en stock), capital immobilisé.
@@ -173,18 +189,20 @@ Exécuter `supabase_v12.sql` (paramètres, historique des mails, agenda, demande
 
 - **Agence → Paramètres & identité** : nom commercial, raison sociale, forme, capital, SIRET, RCS, TVA, adresse, téléphone, e-mail, médiateur, villes desservies. Ces informations s'impriment sur les documents (devis, bon de commande, certificat de garantie, pochette…) et alimentent les mentions légales et le pied de page. Ne rien inventer : champs vides = « [à compléter] » sur les documents.
 - **Photos avec l'appareil** : bouton « Prendre une photo » dans le formulaire d'annonce (sur téléphone, ouvre l'appareil photo).
-- **Scan de carte grise par IA** (Entrée rapide) : `supabase functions deploy read-registration` puis `supabase secrets set ANTHROPIC_API_KEY=sk-ant-...` (clé API console.anthropic.com, usage facturé à part ; modèle réglable avec `ANTHROPIC_MODEL`). Le titulaire n'est pas lu. Toujours vérifier les champs remplis. La saisie par plaque seule n'existe pas (service de données payant).
-- **Mails depuis le dossier** (devis, bon de commande, facture, relance, rendez-vous, remerciement) : `supabase functions deploy send-client-mail`, secrets `RESEND_API_KEY`, `CLIENT_FROM_EMAIL` (ou `SIV_FROM_EMAIL`), `SITE_URL`. Le destinataire est toujours l'e-mail du dossier. Historique dans `deal_mails`.
+- **Scan de carte grise par IA** (Entrée rapide) : fonction `read-registration` = `fn-read-registration.ts`, puis secret `ANTHROPIC_API_KEY=sk-ant-...` (clé API console.anthropic.com, usage facturé à part ; modèle réglable avec `ANTHROPIC_MODEL`). Le titulaire n'est pas lu. Toujours vérifier les champs remplis. La saisie par plaque seule n'existe pas (service de données payant).
+- **Mails depuis le dossier** (devis, bon de commande, facture, relance, rendez-vous, remerciement) : fonction `send-client-mail` = `fn-send-client-mail.ts`, secrets `RESEND_API_KEY`, `CLIENT_FROM_EMAIL` (ou `SIV_FROM_EMAIL`), `SITE_URL`. Le destinataire est toujours l'e-mail du dossier. Historique dans `deal_mails`.
 - **Demande d'avis automatique** : quand un dossier de vente passe à « Livré » (option désactivable dans Paramètres), la fonction `send-client-mail` envoie une seule fois une demande d'avis vers l'espace client. Elle est envoyée quel que soit le sentiment attendu du client : ne filtrez pas les clients satisfaits.
-- **Agenda + rappel la veille** : `supabase functions deploy send-reminders --no-verify-jwt`, secrets `CRON_SECRET` + ceux des mails, puis planifier (SQL Editor, extensions pg_cron et pg_net activées) :
+- **Agenda + rappel la veille** : fonction `send-reminders` = `fn-send-reminders.ts`, Verify JWT désactivé, secrets `CRON_SECRET` + ceux des mails, puis planifier (SQL Editor, extensions pg_cron et pg_net activées) :
   `select cron.schedule('rdv-rappels','0 15 * * *', $$select net.http_post(url:='https://<PROJET>.supabase.co/functions/v1/send-reminders', headers:='{"x-cron-secret":"<CRON_SECRET>"}'::jsonb)$$);`
   (15:00 UTC = 16 h ou 17 h à Paris selon la saison.) Le bouton « Calendrier » d'un rendez-vous télécharge un .ics avec alerte la veille.
-- **Pages ville** `/occasion/<ville>` : renseigner les villes dans Paramètres, puis relancer `scripts/generate-sitemap.mjs`. Ne listez que les villes réellement desservies : des pages de villes sans contenu utile peuvent être jugées de faible qualité par Google.
+- **Pages ville** `/occasion/<ville>` : renseigner les villes dans Paramètres, puis relancer `generate-sitemap.mjs`. Ne listez que les villes réellement desservies : des pages de villes sans contenu utile peuvent être jugées de faible qualité par Google.
 
 ## Cerfa intégrés, recherche globale
-- Déposez les PDF officiels remplissables dans `cerfa/` (noms et mode d'emploi : `cerfa/LISEZMOI.txt`). Les boutons Cerfa du dossier téléchargent alors le PDF pré-rempli sans import. Association automatique d'après le nom des champs (à vérifier), ou exacte via `map` dans `cerfa/index.json` (`node scripts/cerfa-fields.mjs` liste les champs). L'import dans « Modèles Cerfa » reste possible et prioritaire.
 - L'onglet « Conformité » a été retiré.
 - La barre de recherche de l'agence cherche aussi dans les dossiers (nom, plaque, VIN) et les véhicules.
 
 ### Cerfa fournis (octobre 2026)
-`cerfa/` contient les PDF 15776*01, 13750*07, 13757*03 et 13751*01 avec leurs associations. 15776 et 13757 : champs remplis directement ; 13750 et 13751 (PDF à plat) : texte superposé. Cases à cocher non remplies. À VÉRIFIER : versions en vigueur sur service-public.fr.
+la racine du site contient les PDF 15776*01, 13750*07, 13757*03 et 13751*01 avec leurs associations. 15776 et 13757 : champs remplis directement ; 13750 et 13751 (PDF à plat) : texte superposé. Cases à cocher non remplies. À VÉRIFIER : versions en vigueur sur service-public.fr.
+
+## Tampon, signature et logo assurance (v15)
+Agence › Paramètres : importez votre tampon + signature (PNG/JPG) et le logo de l'assureur partenaire, puis réglez le lien de devis (Direct Assurance : À VÉRIFIER). Le tampon s'imprime sur devis, bon de commande, facture, bon de livraison, attestation, quitus, garantie, et sur les Cerfa 15776 et 13751 (case « signature du vendeur/cédant » ou « acquéreur » selon le dossier). Les Cerfa 13750 et 13757 sont signés par le client : pas de tampon.
