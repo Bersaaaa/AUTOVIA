@@ -30,6 +30,7 @@ Collez et exécutez les fichiers **un par un, dans cet ordre** (relancer un fich
 12. [ ] `supabase_v12.sql` (paramètres, agenda, mails)
 13. [ ] `supabase_v13.sql` (marge réelle, contrôle technique, relance devis)
 14. [ ] `supabase_v14.sql` (archivage des documents d'identité et Cerfa, livre de police modifiable avec historique)
+15. [ ] `supabase_v15.sql` (réservations avec acompte)
 
 Si une page affiche « exécutez supabase_xxx.sql », c'est qu'un fichier manque dans cette liste.
 
@@ -64,6 +65,9 @@ Supabase › Edge Functions › « Deploy a new function » : donnez le nom du t
 | `fn-send-client-mail.ts` | `send-client-mail` | activé |
 | `fn-public-carte-grise.ts` | `public-carte-grise` | **désactivé** (à REDÉPLOYER : nouvelle version du parcours carte grise) |
 | `fn-send-reminders.ts` | `send-reminders` | **désactivé** |
+| `fn-stripe-api.ts` | `stripe-api` | **désactivé** (les contrôles sont dans le code) |
+| `fn-stripe-webhook.ts` | `stripe-webhook` | **désactivé** |
+| `fn-reservations-cron.ts` | `reservations-cron` | **désactivé** |
 
 Secrets (Edge Functions › Secrets) :
 
@@ -112,11 +116,24 @@ Secrets (Edge Functions › Secrets) :
 
 ## 9 ter. Page publique « Carte grise » (duplicata et changement d'adresse)
 - Adresse du site : `/carte-grise` (parcours : démarche › particulier ou société › informations › documents envoyés depuis le téléphone › récapitulatif du prix › envoi) et `/suivi-carte-grise` (suivi par numéro de dossier + e-mail, avec envoi des pièces manquantes).
-- Aucun paiement en ligne : le client reçoit un lien de paiement de votre part après vérification (Stripe n'est pas branché ici).
+- Le client PAIE DIRECTEMENT à la fin du parcours (Stripe Checkout) ; le prix est recalculé côté serveur d'après vos Paramètres (jamais celui du navigateur). Le paiement est enregistré en Compta automatiquement (webhook). Trois démarches : duplicata, changement d'adresse, **changement de titulaire**. Pour le changement de titulaire, comme sur SBR CARTE GRISE : le client saisit puissance fiscale (CV), département et date de 1re immatriculation ; la taxe régionale = CV × tarif de la région, **divisée par 2 si le véhicule a plus de 10 ans**, + 40 € de prestation + 13,76 € de frais fixes (gestion 11 € + acheminement 2,76 €) + options facultatives (prioritaire 10, non-gage 10, CarVertical 25, envoi postal 7, WhatsApp 3, assistante 5, aide au remplissage 5), le tout payé en une fois. Tarifs régionaux repris de votre site SBR CARTE GRISE : **À VÉRIFIER chaque année** (modifiables dans Paramètres › « tarifs de la taxe régionale »). Estimation de base : malus écologique et exonérations (électrique, collection…) à vérifier avant traitement.
 - [ ] Redéployez `fn-public-carte-grise.ts` (Verify JWT désactivé) ; secrets `RESEND_API_KEY`, `SIV_TO_EMAIL`, `SIV_FROM_EMAIL`, `SITE_URL`.
 - [ ] Prix : Paramètres › « Carte grise : prix… » (50 € duplicata et 25 € changement d'adresse par défaut, repris de SBR CARTE GRISE). Frais de l'État affichés : 13,76 € pour un duplicata, 0 € pour un changement d'adresse : **À VÉRIFIER** sur service-public.gouv.fr avant mise en ligne.
 - Les demandes arrivent dans Agence › SIV avec leurs pièces (cliquez sur une pièce pour l'ouvrir) et un e-mail est envoyé à `SIV_TO_EMAIL`.
 - Habilitation : les démarches passent par un prestataire habilité (ePlaque Pro). Renseignez son nom dans Paramètres › « prestataire habilité » : il s'affiche sur la page. Gardez le mandat signé du client dans le dossier (le Cerfa 13757 sert de mandat).
+
+## 9 quater. Stripe : réservation avec acompte et paiement carte grise
+1. [ ] Compte sur stripe.com (clés de TEST d'abord). Récupérez la clé secrète `sk_test_…` (Développeurs › Clés API). JAMAIS dans un fichier : seulement dans les Secrets Supabase.
+2. [ ] Secrets Supabase : `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `CLIENT_FROM_EMAIL`, `SITE_URL`, `RESEND_API_KEY`, `SIV_TO_EMAIL`, `CRON_SECRET`.
+3. [ ] Déployez `stripe-api`, `stripe-webhook`, `reservations-cron` (Verify JWT désactivé) et `public-carte-grise` (nouvelle version).
+4. [ ] Stripe › Développeurs › Webhooks › Ajouter : `https://<PROJET>.supabase.co/functions/v1/stripe-webhook`, événements `checkout.session.completed` et `checkout.session.expired`. Copiez la clé `whsec_…` dans `STRIPE_WEBHOOK_SECRET`.
+5. [ ] Encaissement automatique chaque heure (remplacez `<PROJET>` et `<CRON_SECRET>`) :
+   `select cron.schedule('reservations','0 * * * *', $$select net.http_post(url:='https://<PROJET>.supabase.co/functions/v1/reservations-cron', headers:='{"x-cron-secret":"<CRON_SECRET>"}'::jsonb)$$);`
+6. [ ] Paramètres : montant de l'acompte (500 €) et case « réservation en ligne ».
+- Fonctionnement : le client réserve sur la fiche du véhicule, 500 € sont BLOQUÉS (autorisation, pas de prélèvement), le véhicule passe « Réservé ». Agence › Réservations : « Convertir en dossier » (acompte encaissé, déduit du prix), « Libérer » (client non débité), « Garder l'acompte ». Le client peut aussi annuler lui-même, avant la fin du délai, avec le lien de l'e-mail de confirmation : l'acompte lui est rendu (aucun prélèvement). Sans achat, sans réponse et sans annulation, l'acompte est encaissé automatiquement à J+6 16 h.
+- **À VÉRIFIER** : une autorisation de carte dure environ 7 jours maximum, parfois moins selon la banque ; c'est pourquoi l'encaissement a lieu avant J+7. Si la banque a déjà annulé l'autorisation, l'encaissement échoue : vous recevez un e-mail d'alerte.
+- **À VÉRIFIER (juridique)** : conserver l'acompte si le client renonce relève des « arrhes » (art. L214-1 Code de la consommation : le vendeur qui renonce rend le double). Faites valider le texte des conditions par un juriste ; en vente à distance, le droit de rétractation de 14 jours peut s'appliquer à la réservation (vérifiez avec lui).
+- Testez TOUT en mode test Stripe (carte 4242 4242 4242 4242) avant de passer en clés réelles.
 
 ## 10. Ce qui n'est PAS fait automatiquement
 
