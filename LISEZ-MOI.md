@@ -164,3 +164,17 @@ Secrets (Edge Functions › Secrets) :
 - Les estimations (IA, prix conseillé) sont des ESTIMATIONS : vérifiez.
 - Fiscalité (TVA sur marge), obligations légales, mentions : à valider avec votre comptable ou un juriste.
 - Les mails clients ne partent jamais seuls, sauf les deux options à cocher dans Paramètres (avis après livraison, relance de devis).
+
+## 9 octies. Accueil : fond du hero, avis, véhicules vendus
+
+- **Fond du hero** : défile automatiquement avec les photos de vos véhicules publiés (aucune config).
+- **Avis clients** : Paramètres → « Avis clients » (une ligne par avis : `Nom | Texte | note`). N'y mettez que de **vrais** avis (faux avis interdits, À VÉRIFIER). Sans avis, la section n'apparaît pas.
+- **« Ils ont trouvé preneur »** : défile avec les véhicules publiés au statut « vendu ». Compteur manuel optionnel : champ `stat_sold`.
+
+## 9 nonies. CRM agence (style gaaw.pro)
+
+1. Exécutez `supabase_v17.sql` (type de demande « search », charges et marge cible par véhicule).
+2. **Vue d'ensemble** (page d'accueil de l'agence) : bonjour, indicateurs (stock, dossiers, ventes et marge du mois, demandes, RDV, acomptes), actions rapides, « À faire aujourd'hui », pipeline, stock > 60 jours.
+3. **Fiche véhicule** : bloc « Coût de revient & marge » → charges fixes / variables, coût total, vente suggérée (marge cible modifiable), marge sur le prix affiché. Pensez à cliquer « Enregistrer les charges ».
+4. **Recherche de véhicule** : page publique `/recherche-vehicule`. Le lien à envoyer aux clients est dans Demandes du site (bouton « Copier le lien ») ; les demandes arrivent avec budget / critères.
+5. Menu latéral clair avec pastilles de couleur (PC/tablette) et barre du bas (téléphone).
