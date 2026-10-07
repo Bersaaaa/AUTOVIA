@@ -31,6 +31,7 @@ Collez et exécutez les fichiers **un par un, dans cet ordre** (relancer un fich
 13. [ ] `supabase_v13.sql` (marge réelle, contrôle technique, relance devis)
 14. [ ] `supabase_v14.sql` (archivage des documents d'identité et Cerfa, livre de police modifiable avec historique)
 15. [ ] `supabase_v15.sql` (réservations avec acompte)
+16. [ ] `supabase_v16.sql` (statuts carte grise, limitation des contrôles IA, relance des prospects)
 
 Si une page affiche « exécutez supabase_xxx.sql », c'est qu'un fichier manque dans cette liste.
 
@@ -65,6 +66,9 @@ Supabase › Edge Functions › « Deploy a new function » : donnez le nom du t
 | `fn-send-client-mail.ts` | `send-client-mail` | activé |
 | `fn-public-carte-grise.ts` | `public-carte-grise` | **désactivé** (à REDÉPLOYER : nouvelle version du parcours carte grise) |
 | `fn-send-reminders.ts` | `send-reminders` | **désactivé** |
+| `fn-siv-notify.ts` | `siv-notify` | activé (mails de statut au client) |
+| `fn-public-scan.ts` | `public-scan` | **désactivé** (contrôle IA des photos + scan carte grise pour l'estimation ; limité par adresse IP) |
+| `fn-stripe-audit.ts` | `stripe-audit` | **désactivé** (accès par secret cron ou agence connectée) |
 | `fn-stripe-api.ts` | `stripe-api` | **désactivé** (les contrôles sont dans le code) |
 | `fn-stripe-webhook.ts` | `stripe-webhook` | **désactivé** |
 | `fn-reservations-cron.ts` | `reservations-cron` | **désactivé** |
@@ -134,6 +138,25 @@ Secrets (Edge Functions › Secrets) :
 - **À VÉRIFIER** : une autorisation de carte dure environ 7 jours maximum, parfois moins selon la banque ; c'est pourquoi l'encaissement a lieu avant J+7. Si la banque a déjà annulé l'autorisation, l'encaissement échoue : vous recevez un e-mail d'alerte.
 - **À VÉRIFIER (juridique)** : conserver l'acompte si le client renonce relève des « arrhes » (art. L214-1 Code de la consommation : le vendeur qui renonce rend le double). Faites valider le texte des conditions par un juriste ; en vente à distance, le droit de rétractation de 14 jours peut s'appliquer à la réservation (vérifiez avec lui).
 - Testez TOUT en mode test Stripe (carte 4242 4242 4242 4242) avant de passer en clés réelles.
+
+## 9 quinquies. Suivi carte grise, contrôle des photos, prospects, estimation
+- **Statuts** (Agence › SIV, menu déroulant) : Dossier reçu › Paiement confirmé (automatique après paiement Stripe) › Documents à corriger › En traitement › Terminé (ou Refusé). À chaque changement, le client reçoit un e-mail ; pour « à corriger » et « refusé » une fenêtre vous demande le message à lui envoyer (visible aussi dans son suivi). Si le client renvoie des pièces, le dossier repasse automatiquement en « reçu » / « paiement confirmé ».
+- **Contrôle IA des pièces** : dans le parcours public, chaque photo est vérifiée (floue, coupée, reflet, mauvais document). C'est un avertissement, jamais un blocage ; l'IA ne lit aucune donnée personnelle. Coût : quelques centimes (clé `ANTHROPIC_API_KEY`). Limites par adresse IP : 60 contrôles/heure, 600/jour au total.
+- **Relance des prospects** : case dans Paramètres (décochée par défaut). Un visiteur qui a demandé une visite ou montré son intérêt pour un véhicule, sans suite depuis 3 jours (et pas déjà acheteur), reçoit UN mail. Ces prospects apparaissent aussi chaque jour dans votre récapitulatif. Redéployez `send-reminders`.
+- **Estimation de reprise** (page /vendre) : le client peut photographier sa carte grise ; marque, modèle, année, carburant et plaque sont remplis. Pourquoi pas la plaque seule ? L'accès aux données d'une plaque est un service payant (À VÉRIFIER : fournisseurs de données auto). Dans Paramètres, « % de reprise » affiche en plus une offre de reprise immédiate indicative (ex. 85 % de la valeur estimée) ; vide = non affichée. Scans limités à 8/heure par adresse IP.
+
+## 9 sexies. Messages types et contrôle des paiements
+- **Messages types** : bouton « Réponse type » dans Agence › Demandes du site, dans chaque demande SIV, et « Réponses types (mail / SMS / WhatsApp) » dans un dossier. 8 modèles fournis (relance, rendez-vous, documents manquants, visite, véhicule disponible, rappel de réservation, carte grise à corriger, remerciement + avis). Le message est pré-rempli avec le prénom, le véhicule, votre téléphone, votre adresse ; vous complétez les [crochets], puis : « Envoyer l'e-mail » (depuis un dossier : envoyé par le site et gardé dans l'historique ; sinon ouvre votre messagerie), « SMS » ou « WhatsApp » (ouvrent l'application avec le texte prêt, depuis un téléphone), « Copier ». Agence › Messages types : modifier chaque modèle ou le remettre d'origine. Un envoi n'est jamais automatique.
+- **Contrôle des paiements** : la fonction `stripe-audit` compare les paiements Stripe des 3 derniers jours avec votre base. Si un webhook a été raté, elle enregistre la réservation (ou le paiement carte grise et la recette en compta) toute seule, et vous envoie un e-mail pour tout ce qui demande votre décision (paiement sans réservation, véhicule déjà vendu…). Bouton « Vérifier les paiements Stripe » dans Agence › Réservations.
+- [ ] Planification quotidienne (7 h, remplacez `<PROJET>` et `<CRON_SECRET>`) :
+  `select cron.schedule('audit-stripe','0 5 * * *', $$select net.http_post(url:='https://<PROJET>.supabase.co/functions/v1/stripe-audit', headers:='{"x-cron-secret":"<CRON_SECRET>"}'::jsonb)$$);`
+- Le webhook ignore maintenant un paiement déjà enregistré (plus de recette en double si Stripe renvoie l'événement). Redéployez `stripe-webhook`.
+
+## 9 septies. Page d'accueil et estimation de reprise
+- Accueil réorganisée : titre fort, deux boutons (Acheter / Vendre), compteurs (véhicules en stock automatique ; « véhicules vendus » seulement si vous renseignez le vrai chiffre dans Paramètres), recherche, sélection, estimation de reprise, comparatif, FAQ.
+- **Estimation de reprise** : mini-formulaire sur l'accueil (marque, modèle, année, kilométrage) qui ouvre la page /vendre déjà remplie ; la page /vendre n'a plus de champ immatriculation (le scan de carte grise remplit marque, modèle, année et carburant, sans conserver la plaque).
+- **Comparatif** : tableau « nous / garage traditionnel / sites d'annonces ». À VÉRIFIER : une publicité comparative doit être exacte et vérifiable ; ajustez les cases dans `index.html` (bloc « Le comparatif ») à votre réalité, et gardez la mention « indicatif ».
+- Photos : remplacez les images de démonstration (Unsplash) par les vôtres avant la mise en ligne.
 
 ## 10. Ce qui n'est PAS fait automatiquement
 

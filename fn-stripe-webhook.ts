@@ -53,11 +53,11 @@ Deno.serve(async (req) => {
     }
     if (ev.type === "checkout.session.completed" && sid && s.payment_status === "paid") {
       const { data: r } = await admin.from("siv_requests").select("*").eq("id", sid).maybeSingle();
-      if (r) {
-        await admin.from("siv_requests").update({ data: { ...(r.data ?? {}), pay_status: "paid", paid_at: new Date().toISOString() } }).eq("id", sid);
+      if (r && r.data?.pay_status !== "paid") {
+        await admin.from("siv_requests").update({ data: { ...(r.data ?? {}), pay_status: "paid", paid_at: new Date().toISOString() }, ...(["draft", "sent"].includes(r.status) ? { status: "paid", last_notified_status: "paid" } : {}) }).eq("id", sid);
         const amt = (s.amount_total ?? 0) / 100;
         await admin.from("accounting_entries").insert({ kind: "recette", category: "Carte grise", label: `Carte grise ${r.data?.numero ?? ""} (${r.client_name})`, amount_ttc: amt, vat_amount: 0, payment_mode: "carte" });
-        await send(r.client_email, `Paiement reçu : ${r.data?.numero ?? ""}`, `<p>Bonjour ${esc(r.client_name)},</p><p>Nous avons bien reçu votre paiement de ${eur(amt)}. Nous traitons votre démarche.</p>`);
+        await send(r.client_email, `Paiement confirmé : ${r.data?.numero ?? ""}`, `<p>Bonjour ${esc(r.client_name)},</p><p><b>Paiement confirmé</b> : nous avons bien reçu ${eur(amt)}. Nous vérifions maintenant votre dossier et vous prévenons à chaque étape.</p>`);
         await send(agency, `Paiement reçu : ${r.data?.numero ?? ""}`, `<p>${esc(r.client_name)} a payé ${eur(amt)} pour la démarche ${esc(r.data?.numero ?? "")}.</p>`);
       }
     }

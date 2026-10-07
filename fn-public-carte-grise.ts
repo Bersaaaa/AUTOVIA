@@ -152,7 +152,7 @@ Deno.serve(async (req) => {
         .map((u: Record<string, unknown>) => ({ path: String(u.path), name: `${cut(u.label, 80)} — ${cut(u.name, 80)}`, label: cut(u.label, 120) }));
       const files = [...(r.files ?? []), ...up];
       const first = r.status === "draft";
-      await admin.from("siv_requests").update({ files, ...(first ? { status: "sent", sent_at: new Date().toISOString() } : {}) }).eq("id", r.id);
+      await admin.from("siv_requests").update({ files, ...(first ? { status: "sent", sent_at: new Date().toISOString() } : r.status === "to_fix" ? { status: D.pay_status === "paid" ? "paid" : "sent" } : {}) }).eq("id", r.id);
       const link = site ? `${site}/#/suivi-carte-grise?n=${numero}&e=${encodeURIComponent(email)}` : "";
       if (to) {
         const rows: [string, string][] = [["Numéro", numero], ["Démarche", KINDS[r.kind] ?? r.kind], ["Client", `${r.client_name}${D.party === "soc" ? " (société)" : ""}`], ["E-mail", r.client_email], ["Téléphone", r.client_phone ?? ""], ["Immatriculation", r.plate ?? ""], ["Motif", String(D.motif ?? "")], ["Nouvelle adresse", String(D.new_address ?? "")], ["SIRET", String(D.siret ?? "")], ["Détail", D.breakdown ? ((x: Record<string, unknown>) => `prestation ${x.prestation} € + taxe régionale ${x.taxe_regionale} € (${x.cv} CV × ${x.tarif_cv} €, ${x.region}${x.plus_10_ans ? ", +10 ans −50 %" : ""}) + frais fixes ${x.frais_etat} € + options ${((x.options as {nom:string}[]) ?? []).map((o) => o.nom).join(", ") || "aucune"}`)(D.breakdown as Record<string, unknown>) : ""], ["Tarif", D.tarif ? `${D.tarif} € TTC (${D.pay_status === "paid" ? "PAYÉ" : "paiement en ligne en cours / à confirmer"})` : ""], ["Message", r.notes ?? ""], ["Pièces reçues", String(up.length)]];
@@ -169,7 +169,7 @@ Deno.serve(async (req) => {
     if (action === "track") {
       const have = new Set((r.files ?? []).map((f: { label?: string }) => f.label));
       const docs = ((D.docs as string[]) ?? []).map((label) => ({ label, received: have.has(label), optional: optional(label) }));
-      return json({ ok: true, numero, status: r.status, kindLabel: KINDS[r.kind] ?? r.kind, created_at: r.created_at, plate: r.plate, docs, pay_url: D.pay_status === "pending" ? D.pay_url ?? null : null, pay_amount: D.pay_amount ?? null, pay_status: D.pay_status ?? null });
+      return json({ ok: true, numero, status: r.status, kindLabel: KINDS[r.kind] ?? r.kind, created_at: r.created_at, plate: r.plate, docs, pay_url: D.pay_status === "pending" ? D.pay_url ?? null : null, pay_amount: D.pay_amount ?? null, pay_status: D.pay_status ?? null, fix_message: r.status === "to_fix" ? D.fix_message ?? null : null });
     }
     return json({ error: "bad_action" }, 400);
   } catch (e) {
