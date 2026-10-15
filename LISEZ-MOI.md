@@ -178,3 +178,23 @@ Secrets (Edge Functions › Secrets) :
 3. **Fiche véhicule** : bloc « Coût de revient & marge » → charges fixes / variables, coût total, vente suggérée (marge cible modifiable), marge sur le prix affiché. Pensez à cliquer « Enregistrer les charges ».
 4. **Recherche de véhicule** : page publique `/recherche-vehicule`. Le lien à envoyer aux clients est dans Demandes du site (bouton « Copier le lien ») ; les demandes arrivent avec budget / critères.
 5. Menu latéral clair avec pastilles de couleur (PC/tablette) et barre du bas (téléphone).
+
+## 9 decies. Pipeline, signature sans compte, galerie, annonces, rappels, journal, sauvegarde
+
+À faire dans l'ordre (tout reste À TESTER en réel : j'ai seulement testé avec une fausse base) :
+
+1. **SQL** (Supabase > SQL Editor) : `supabase_v17.sql` (si pas déjà fait), `supabase_v18.sql`, `supabase_v19.sql`.
+2. **Fonctions** (Supabase > Edge Functions, JWT désactivé pour les 3) :
+   - `public-sign` ← `fn-public-sign.ts` (signature sans compte). Secrets facultatifs pour les e-mails de confirmation : `RESEND_API_KEY`, `CLIENT_FROM_EMAIL`, `SITE_URL`.
+   - `backup` ← `fn-backup.ts` (secret `CRON_SECRET`).
+   - `send-reminders` : redéployer avec le nouveau `fn-send-reminders.ts`.
+3. **Planifier la sauvegarde** (SQL Editor, remplacez URL et secret ; même principe que les autres crons) :
+   `select cron.schedule('backup-nuit','30 2 * * *',$$select net.http_post(url:='https://<projet>.supabase.co/functions/v1/backup',headers:='{"x-cron-secret":"<CRON_SECRET>"}'::jsonb)$$);`
+   Les sauvegardes apparaissent dans Sauvegarde / export (30 dernières gardées, bucket privé). Photos et PDF ne sont pas copiés.
+4. **Pipeline** : Dossiers par étapes = colonnes à glisser (liste « Déplacer » sur téléphone).
+5. **Signature sans compte** : dans un dossier, « Faire signer le client » → cochez bon de commande, garantie, bon de livraison, quitus, attestation, Cerfa (15776, 13750, 13757, 13751) → un lien unique (copier, WhatsApp, SMS, e-mail). Le client lit et signe **tout d'un coup**, sans compte. Chaque document signé garde date, adresse IP, navigateur et empreinte SHA-256 ; pour un Cerfa PDF, une page « certificat de signature » est ajoutée à la fin (le Cerfa lui-même n'est pas modifié). Lien valable 30 jours.
+   - **À VÉRIFIER** : il s'agit d'une signature électronique SIMPLE. Pour l'administration (SIV, Cerfa 15776), vérifiez avec votre conseil / SBR CARTE GRISE si elle suffit ou si la case de signature du Cerfa doit être signée.
+   - Vérifiez toujours le Cerfa pré-rempli (cases à cocher) avec « Voir » avant d'envoyer le lien.
+6. **Fiche véhicule** : photos (ajout, couverture, ordre), documents (carte grise, CT, facture d'achat, assurance…), fin d'assurance, **annonce prête à publier** (copier, Leboncoin, WhatsApp, Facebook, e-mail ; le lien de dépôt Leboncoin est À VÉRIFIER).
+7. **Rappels** (e-mail quotidien à l'agence) : CT, **assurance**, garanties, et **clients en recherche** dont un véhicule du stock correspond (une alerte par couple). Option Paramètres : prévenir le client de la fin de sa garantie (une fois).
+8. **Journal d'activité** (menu Outils) : qui a créé, modifié ou supprimé quoi (champs modifiés, sans leurs valeurs). Conservez-le selon votre politique de données (RGPD, À VÉRIFIER).
